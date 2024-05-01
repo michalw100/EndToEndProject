@@ -2,8 +2,8 @@
 /* Create the database */
 CREATE DATABASE  IF NOT EXISTS postsDB;
 
-use postDB;
---
+use postsDB;
+
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS todos;
@@ -25,7 +25,7 @@ CREATE TABLE users (
   userID int(9) AUTO_INCREMENT,
   userName varchar(50) NOT NULL,
   personName varchar(50) NOT NULL,
-  email varchar(10) NOT NULL,
+  email varchar(30) NOT NULL,
   phone varchar(100) NOT NULL,
   addressID int NOT NULL,
   company varchar(50) NOT NULL,
