@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {create, getAll, getById,deleteById,update} = require('../controllers/todoController')
+const {create, getAll, getById,deleteById,update} = require('../controllers/todosController')
 router.use (express.json());
 router.use(express.urlencoded({ extended: true }));
 router.get("/", async(req, res) => {
@@ -31,7 +31,7 @@ router.put("/:id", async(req, res) => {
 
 router.delete("/:id", async(req, res) => {
     const id = req.params.id;
-    const response = await this.deleteById(id);
+    const response = await deleteById(id);
     res.send();
 });
 

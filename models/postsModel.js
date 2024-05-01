@@ -14,7 +14,7 @@ async function getPosts() {
 
 async function getPost(id) {
     try {
-        const sql = 'SELECT * FROM posts where id=?';
+        const sql = 'SELECT * FROM posts where postID=?';
 
         const result = await pool.query(sql, [id]);
 
@@ -29,10 +29,8 @@ async function getPost(id) {
 
 async function createPost(title,body,userID) {
     try {
-        const sql = "INSERT INTO posts (`title`, `body`,`userID`) VALUES(?, ?,?)";
-        ;
-
-        const result = await pool.query(sql, [title, body,userID]);
+        const sql = "INSERT INTO posts (`userID`,`title`, `body`) VALUES(?, ?,?)";
+        const result = await pool.query(sql, [userID,title, body]);
 
         return result[0];
 
@@ -42,7 +40,7 @@ async function createPost(title,body,userID) {
 }
 async function deletePost(id) {
     try {
-        const sql = `DELETE FROM posts WHERE id = ?`;
+        const sql = `DELETE FROM posts WHERE postID = ?`;
         const result = await pool.query(sql, [id]);
     } catch (err) {
         console.error('Error deleting toy:', err);
@@ -51,7 +49,7 @@ async function deletePost(id) {
 }
 async function updatePost(id,title,body,userID) {
     try {
-        const sql = `UPDATE posts SET title = ?, body = ?,userID = ? WHERE id = ?`;
+        const sql = `UPDATE posts SET title = ?, body = ?,userID = ? WHERE postID = ?`;
         const result = await pool.query(sql, [title, body, userID,id]);
         return result;
     } catch (err) {

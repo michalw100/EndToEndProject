@@ -15,7 +15,7 @@ async function getTodos() {
   
   async function getTodo(id) {
     try {
-      const sql = 'SELECT * FROM todos where id=?';
+      const sql = 'SELECT * FROM todos where todoID=?';
       const result = await pool.query(sql, [id]);
       return result[0][0];
 
@@ -37,7 +37,7 @@ async function createTodo(title, completed, userID) {
 
 async function deleteTodo(id) {
     try {
-      const sql = `DELETE FROM todos WHERE id = ?`;
+      const sql = `DELETE FROM todos WHERE todoID = ?`;
       const result = await pool.query(sql, [id]);
     } catch (err) {
       console.error('Error deleting todo:', err);
@@ -46,7 +46,7 @@ async function deleteTodo(id) {
   }
   async function updateTodo(id, title, completed, userID)  {
     try {
-      const sql = `UPDATE todos SET title = ?, completed = ?, userID = ? WHERE id = ?`;
+      const sql = `UPDATE todos SET title = ?, completed = ?, userID = ? WHERE todoID = ?`;
       const result = await pool.query(sql, [title, completed, userID, id]);
       return result;
     } catch (err) {
