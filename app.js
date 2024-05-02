@@ -46,6 +46,8 @@ const todosRouter = require("./routes/todosRoutes")
 app.use("/todos",todosRouter);
 const usersRouter = require("./routes/usersRoutes")
 app.use("/users",usersRouter);
+const commentsRouter = require("./routes/commentsRoutes")
+app.use("/comments",commentsRouter);
 
 app.listen(port, () => {
   console.log(`app listening on port ${port}`);
