@@ -1,5 +1,6 @@
 const pool = require('../DB.js');
 
+
 async function getPosts() {
     try {
         const sql = 'SELECT * FROM posts';

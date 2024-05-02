@@ -40,10 +40,13 @@ const port = 3000;
 //   res.send(user);
 // });
 
-const postsRouter=require("./routes/postsRoutes")
+const postsRouter = require("./routes/postsRoutes")
 app.use("/posts",postsRouter);
-const todosRouter=require("./routes/todosRoutes")
+const todosRouter = require("./routes/todosRoutes")
 app.use("/todos",todosRouter);
+const usersRouter = require("./routes/usersRoutes")
+app.use("/users",usersRouter);
+
 app.listen(port, () => {
   console.log(`app listening on port ${port}`);
 });

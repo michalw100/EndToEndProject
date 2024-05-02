@@ -24,7 +24,7 @@ CREATE TABLE addresses (
 CREATE TABLE users (
   userID int(9) AUTO_INCREMENT,
   userName varchar(50) NOT NULL,
-  personName varchar(50) NOT NULL,
+  name varchar(50) NOT NULL,
   email varchar(30) NOT NULL,
   phone varchar(100) NOT NULL,
   addressID int NOT NULL,
@@ -73,7 +73,7 @@ INSERT INTO addresses (street, city, zipcode) VALUES
 ('606 Ash St', 'Houston', '77001'),
 ('707 Spruce St', 'Atlanta', '30301');
 
-INSERT INTO users (userName, personName, email, phone, addressID, company) VALUES
+INSERT INTO users (userName, name, email, phone, addressID, company) VALUES
 ('user1', 'John Doe', 'john@example.com', '123-456-7890', 1, 'ABC Inc.'),
 ('user2', 'Jane Smith', 'jane@example.com', '987-654-3210', 2, 'XYZ Corp.'),
 ('user3', 'David Brown', 'david@example.com', '111-222-3333', 3, '123 Industries'),

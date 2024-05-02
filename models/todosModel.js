@@ -1,4 +1,3 @@
-
 const pool = require('../DB.js');
 
 async function getTodos() {

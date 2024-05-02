@@ -39,4 +39,4 @@ async function update(id, title, completed, userID) {
     }
 }
 
-module.exports = { create, getAll, getById,deleteById,update }
+module.exports = { create, getAll, getById, deleteById, update }
