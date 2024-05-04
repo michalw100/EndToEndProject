@@ -9,6 +9,17 @@ async function createAddress( street, city, zipcode) {
         console.log(err);
     }
 }
+async function getAddress(id) {
+    try {
+        const sql = 'SELECT * FROM addresses where addressID=?';
+
+        const result = await pool.query(sql, [id]);
+
+        return result[0][0];
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 async function updateAddress(id, street, city, zipcode) {
     try {
@@ -32,4 +43,4 @@ async function deleteAddress(id) {
     }
 }
 
-module.exports = { createAddress, updateAddress, deleteAddress }
+module.exports = { createAddress, updateAddress, deleteAddress,getAddress }
