@@ -9,9 +9,15 @@ DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS todos;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS addresses;
+DROP TABLE IF EXISTS passwords;
 
 /* Create the tables */
 
+CREATE TABLE passwords (
+  passwordID int AUTO_INCREMENT,
+  password varchar(9) NOT NULL,
+  PRIMARY KEY (passwordID)
+);
 
 CREATE TABLE addresses (
   addressID int AUTO_INCREMENT,
@@ -28,9 +34,11 @@ CREATE TABLE users (
   email varchar(30) NOT NULL,
   phone varchar(100) NOT NULL,
   addressID int NOT NULL,
+  passwordID int NOT NULL,
   company varchar(50) NOT NULL,
   PRIMARY KEY (userID),
-  FOREIGN KEY (addressID) REFERENCES addresses (addressID)
+  FOREIGN KEY (addressID) REFERENCES addresses (addressID),
+  FOREIGN KEY (passwordID) REFERENCES passwords (passwordID)
 );
 
 CREATE TABLE todos (
@@ -61,62 +69,75 @@ CREATE TABLE comments (
   FOREIGN KEY (postID) REFERENCES posts (postID)
 );
 
-INSERT INTO addresses (street, city, zipcode) VALUES
-('123 Main St', 'New York', '10001'),
-('456 Elm St', 'Los Angeles', '90001'),
-('789 Oak St', 'Chicago', '60601'),
-('101 Pine St', 'San Francisco', '94101'),
-('202 Maple St', 'Seattle', '98101'),
-('303 Cedar St', 'Miami', '33101'),
-('404 Birch St', 'Dallas', '75201'),
-('505 Walnut St', 'Boston', '02101'),
-('606 Ash St', 'Houston', '77001'),
-('707 Spruce St', 'Atlanta', '30301');
+INSERT INTO passwords (password) VALUES
+('freedom12'),
+('liberty4'),
+('liberate'),
+('equality'),
+('democracy'),
+('justice9'),
+('independ'),
+('rights4'),
+('peaceful'),
+('revolute');
 
-INSERT INTO users (userName, name, email, phone, addressID, company) VALUES
-('user1', 'John Doe', 'john@example.com', '123-456-7890', 1, 'ABC Inc.'),
-('user2', 'Jane Smith', 'jane@example.com', '987-654-3210', 2, 'XYZ Corp.'),
-('user3', 'David Brown', 'david@example.com', '111-222-3333', 3, '123 Industries'),
-('user4', 'Emily Johnson', 'emily@example.com', '444-555-6666', 4, '456 Corp.'),
-('user5', 'Michael Davis', 'michael@example.com', '777-888-9999', 5, '789 Co.'),
-('user6', 'Sarah Wilson', 'sarah@example.com', '000-111-2222', 6, 'ABC Corp.'),
-('user7', 'Daniel Martinez', 'daniel@example.com', '333-444-5555', 7, 'XYZ Ltd.'),
-('user8', 'Olivia Anderson', 'olivia@example.com', '666-777-8888', 8, '1234 Enterprises'),
-('user9', 'William Taylor', 'william@example.com', '999-000-1111', 9, '4567 Company'),
-('user10', 'Sophia Garcia', 'sophia@example.com', '222-333-4444', 10, '7899 LLC');
+INSERT INTO addresses (street, city, zipcode) VALUES
+('123 Freedom Ave', 'Liberty City', 'FRE123'),
+('456 Liberty St', 'Independence Town', 'IND456'),
+('789 Liberty Blvd', 'Equalityville', 'EQL789'),
+('321 Justice Rd', 'Democracy Springs', 'DEM321'),
+('654 Revolution Lane', 'Peaceful Meadows', 'PEA654'),
+('987 Rights Blvd', 'Freeville', 'FRE987'),
+('123 Liberty Ln', 'Liberation City', 'LIB123'),
+('456 Equality Ave', 'Justiceburg', 'JUS456'),
+('789 Democracy St', 'Revolution City', 'REV789'),
+('321 Peaceful Blvd', 'Rightsville', 'RIG321');
+
+INSERT INTO users (userName, name, email, phone, addressID, passwordID, company) VALUES
+('freedomlover', 'John Doe', 'john.doe@example.com', '123-456-7890', 1, 1, 'Freedom Inc.'),
+('libertyseeker', 'Jane Smith', 'jane.smith@example.com', '456-789-0123', 2, 2, 'Liberty Co.'),
+('liberator1', 'Michael Johnson', 'michael.johnson@example.com', '789-012-3456', 3, 3, 'Liberation Enterprises'),
+('equalityforall', 'Emily Brown', 'emily.brown@example.com', '012-345-6789', 4, 4, 'Equality Foundation'),
+('democracylover', 'David Wilson', 'david.wilson@example.com', '345-678-9012', 5, 5, 'Democracy Corp.'),
+('justicefighter', 'Sarah Lee', 'sarah.lee@example.com', '678-901-2345', 6, 6, 'Justice Advocates'),
+('independencer', 'Christopher Clark', 'christopher.clark@example.com', '901-234-5678', 7, 7, 'Independence LLC'),
+('rightsactivist', 'Rachel Martinez', 'rachel.martinez@example.com', '234-567-8901', 8, 8, 'Rights Group'),
+('peacemaker', 'Daniel White', 'daniel.white@example.com', '567-890-1234', 9, 9, 'Peaceful Solutions'),
+('revolutionary', 'Amanda Taylor', 'amanda.taylor@example.com', '890-123-4567', 10, 10, 'Revolutionary Movement');
 
 INSERT INTO todos (completed, title, userID) VALUES
-(true, 'Task 1', 1),
-(false, 'Task 2', 2),
-(true, 'Task 3', 3),
-(false, 'Task 4', 4),
-(true, 'Task 5', 5),
-(false, 'Task 6', 6),
-(true, 'Task 7', 7),
-(false, 'Task 8', 8),
-(true, 'Task 9', 9),
-(false, 'Task 10', 10);
+(true, 'Spread the message of freedom', 1),
+(true, 'Advocate for liberty', 2),
+(true, 'Fight for liberation', 3),
+(false, 'Strive for equality', 4),
+(false, 'Defend democracy', 5),
+(true, 'Seek justice', 6),
+(false, 'Promote independence', 7),
+(true, 'Protect rights', 8),
+(false, 'Work for peace', 9),
+(true, 'Inspire revolution', 10);
 
 INSERT INTO posts (title, body, userID) VALUES
-('Post 1', 'This is the body of post 1.', 1),
-('Post 2', 'This is the body of post 2.', 2),
-('Post 3', 'This is the body of post 3.', 3),
-('Post 4', 'This is the body of post 4.', 4),
-('Post 5', 'This is the body of post 5.', 5),
-('Post 6', 'This is the body of post 6.', 6),
-('Post 7', 'This is the body of post 7.', 7),
-('Post 8', 'This is the body of post 8.', 8),
-('Post 9', 'This is the body of post 9.', 9),
-('Post 10', 'This is the body of post 10.', 10);
+('The Essence of Freedom', 'Freedom is the oxygen of the soul.', 1),
+('In Pursuit of Liberty', 'Liberty is the cornerstone of a thriving society.', 2),
+('Liberation Now!', 'It is time to break the chains of oppression.', 3),
+('Equality Matters', 'Every individual deserves equal opportunities and rights.', 4),
+('Democracy Call', 'Let the voice of the people be heard.', 5),
+('Quest for Justice', 'Justice is the bedrock of a fair society.', 6),
+('Embracing Independence', 'Independence paves the way for self-determination.', 7),
+('Championing Rights', 'Stand up for what is right and just.', 8),
+('The Path to Peace', 'Peace is not merely the absence of conflict but the presence of justice.', 9),
+('Rallying for Revolution', 'The time for change is now.', 10);
 
 INSERT INTO comments (postID, body, email, commentName) VALUES
-(1, 'Comment 1 for post 1.', 'commenter1@example.com', 'Commenter 1'),
-(2, 'Comment 1 for post 2.', 'commenter2@example.com', 'Commenter 2'),
-(3, 'Comment 1 for post 3.', 'commenter3@example.com', 'Commenter 3'),
-(4, 'Comment 1 for post 4.', 'commenter4@example.com', 'Commenter 4'),
-(5, 'Comment 1 for post 5.', 'commenter5@example.com', 'Commenter 5'),
-(6, 'Comment 1 for post 6.', 'commenter6@example.com', 'Commenter 6'),
-(7, 'Comment 1 for post 7.', 'commenter7@example.com', 'Commenter 7'),
-(8, 'Comment 1 for post 8.', 'commenter8@example.com', 'Commenter 8'),
-(9, 'Comment 1 for post 9.', 'commenter9@example.com', 'Commenter 9'),
-(10, 'Comment 1 for post 10.', 'commenter10@example.com', 'Commenter 10');
+(1, 'Well said! Freedom indeed fuels our spirits.', 'freedomlover@example.com', 'FreedomFan123'),
+(2, 'Absolutely! Liberty is our birthright.', 'libertyseeker@example.com', 'LibertyLover456'),
+(3, 'Liberation is long overdue. Let''s make it happen!', 'liberator1@example.com', 'LiberationWarrior789'),
+(4, 'Equality is essential for a just society.', 'equalityforall@example.com', 'EqualityAdvocate321'),
+(5, 'Democracy empowers the people to shape their destiny.', 'democracylover@example.com', 'DemocracyDefender654'),
+(6, 'Justice must prevail for all.', 'justicefighter@example.com', 'JusticeSeeker987'),
+(7, 'Independence allows us to chart our own course.', 'independencer@example.com', 'IndependenceAdvocate123'),
+(8, 'Rights are not negotiable. Stand firm.', 'rightsactivist@example.com', 'RightsChampion456'),
+(9, 'Peace is the cornerstone of progress.', 'peacemaker@example.com', 'PeaceBuilder789'),
+(10, 'Revolution begins with the courage to challenge the status quo.', 'revolutionary@example.com', 'RevolutionarySpirit321'),
+(10, 'Comment 1 for post 10.', 'commenter10@example.com', 'Commenter 10')
