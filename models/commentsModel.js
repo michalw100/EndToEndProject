@@ -43,7 +43,15 @@ async function deleteComment(id) {
         throw err;
     }
 }
-
+async function deleteCommentsByPostId(postId) {
+    try {
+        const sql = `DELETE FROM comments WHERE postID = ?`;
+        const result = await pool.query(sql, [postId]);
+    } catch (err) {
+        console.error('Error deleting comments:', err);
+        throw err;
+    }
+}
 async function updateComment(id,postID,body,email,commentName) {
     try {
         const sql = `UPDATE comments SET postID = ?, body = ?,email = ?, commentName=? WHERE commentID = ?`;
@@ -55,4 +63,4 @@ async function updateComment(id,postID,body,email,commentName) {
     }
 }
 
-module.exports = { updateComment, getComment, getComments, deleteComment, createComment }
+module.exports = { updateComment, getComment, getComments, deleteComment, createComment,deleteCommentsByPostId }

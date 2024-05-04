@@ -42,7 +42,7 @@ async function deleteUser(id) {
         const user = await getUser(id);
         const sql = `DELETE FROM users WHERE userID = ?`;
         const result = await pool.query(sql, [id]);
-        // const address = await deleteAddress(user.addressID);
+        const address =  deleteAddress(user.addressID);
     } catch (err) {
         console.error('Error deleting user:', err);
         throw err;
