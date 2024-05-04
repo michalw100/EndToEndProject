@@ -1,5 +1,5 @@
 const pool = require('../DB.js');
-
+const commentsModel=require("./commentsModel.js")
 
 async function getPosts() {
     try {
@@ -41,10 +41,11 @@ async function createPost(title,body,userID) {
 }
 async function deletePost(id) {
     try {
+        commentsModel.deleteCommentsByPostId(id);
         const sql = `DELETE FROM posts WHERE postID = ?`;
         const result = await pool.query(sql, [id]);
     } catch (err) {
-        console.error('Error deleting toy:', err);
+        console.error('Error deleting post:', err);
         throw err;
     }
 }
