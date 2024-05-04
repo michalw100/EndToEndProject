@@ -32,4 +32,4 @@ async function update(id, password) {
     }
 }
 
-module.exports = { create, getAll, getById, deleteById, update }
+module.exports = { create,  getById, deleteById, update }
