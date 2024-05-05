@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
     try {
         const users = await getAll();
         const userAddresses = await Promise.all(users.map(async (user) => {
-            const userAddress = await addressController.getById(user.addressID);
+        const userAddress = await addressController.getById(user.addressID);
             delete user.passwordID;
             delete user.addressID;
             user.address = userAddress;

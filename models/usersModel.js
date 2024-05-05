@@ -6,7 +6,6 @@ async function getUsers() {
     try {
         const sql = 'SELECT * FROM users';
         const [rows, fields] = await pool.query(sql);
-        console.log(rows);
         return rows;
 
     } catch (err) {
