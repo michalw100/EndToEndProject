@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { create, getAll, getById, deleteById, update } = require('../controllers/usersController')
+const { create, getAll, getById, deleteById, update,getByPasswordAndUserName } = require('../controllers/usersController')
 const addressController = require('../controllers/addressesController')
-const paswordController = require('../controllers/passwordsContrller')
+const paswordController = require('../controllers/passwordsContrller');
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
@@ -22,16 +22,23 @@ router.get("/", async (req, res) => {
         res.status(500).send("שגיאה בעת טעינת המשתמשים וכתובות");
     }
 });
-
 router.get("/", async (req, res) => {
-    const users = await getAll();
-    for (const user of users) {
-        const userAddress = await addressController.getById(user.addressID);
-        delete user.passwordID;
-        delete user.addressID;
-        user.address = userAddress;
-    }
-    res.send(users);
+    const userName = req.query.username;
+    const password = req.query.password;
+    console.log(password);
+    // const password = await passwordController.getById(id);
+    res.send(await getByPasswordAndUserName(password, userName));
+});
+
+router.get("/:id", async (req, res) => {
+    const id = req.params.id;
+    const user = await getById(id);
+        // const userAddress = await addressController.getById(user.addressID);
+         delete user.passwordID;
+        // delete user.addressID;
+        // user.address = userAddress;
+    
+    res.send(user);
 })
 
 router.get("/:id/password", async (req, res) => {
@@ -39,6 +46,13 @@ router.get("/:id/password", async (req, res) => {
     const password = await paswordController.getById(id);
     res.send(password)
 });
+
+// router.get("/?username=:userName&&password=${password}", async (req, res) => {
+//     const userName=req.params.userName;
+//     const password = req.params.password;
+//     // const password = await paswordController.getById(id);
+//     res.send(await getByPasswordAndUserName(password,userName));
+// });
 
 router.post("/", async (req, res) => {
     try {

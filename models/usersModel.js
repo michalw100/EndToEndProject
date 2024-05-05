@@ -15,8 +15,17 @@ async function getUsers() {
 
 async function getUser(id) {
     try {
-        const sql = 'SELECT * FROM users where userID=?';
+        const sql = 'SELECT * FROM users natural join addresses where userID=?';
         const result = await pool.query(sql, [id]);
+        return result[0][0];
+    } catch (err) {
+        console.log(err);
+    }
+}
+async function getUserByPasswordAndUserName(password,userName) {
+    try {
+        const sql = 'SELECT * FROM users natural join passwords where userName=? AND password=?';
+        const result = await pool.query(sql, [userName,password]);
         return result[0][0];
     } catch (err) {
         console.log(err);
@@ -67,4 +76,4 @@ async function updateUser(id, userName, name, email, phone, street, city, zipcod
     }
 }
 
-module.exports = { updateUser, getUser, getUsers, deleteUser, createUser }
+module.exports = { updateUser, getUser, getUsers, deleteUser, createUser,getUserByPasswordAndUserName }

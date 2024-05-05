@@ -15,6 +15,14 @@ async function getAll() {
         throw err;
     }
 }
+async function getByPasswordAndUserName(password,userName) {
+    try {
+        return model.getUserByPasswordAndUserName(password,userName);
+    } catch (err) {
+        throw err;
+    }
+}
+
 
 async function getById(id) {
     try {
@@ -40,4 +48,4 @@ async function update(id, userName, name, email, phone, street, city, zipcode, c
     }
 }
 
-module.exports = { create, getAll, getById, deleteById, update }
+module.exports = { create, getAll, getById, deleteById, update,getByPasswordAndUserName }

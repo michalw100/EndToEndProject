@@ -10,7 +10,7 @@ const LogIn = () => {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const handleLogInButton = () => {
-        fetch(`http://localhost:3000/users?username=${userName}&&website=${password}`)//חיפוש המשתמש 
+        fetch(`http://localhost:3000/users?username=${userName}&&password=${password}`)//חיפוש המשתמש 
             .then((response) => response.json()) 
             .then((answer) => {
                 if (!answer[0]) {//אם לא חזרה תשובה זה אומר שיש בעיה בבקשת המשתמש
