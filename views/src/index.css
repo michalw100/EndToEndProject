@@ -1,5 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -34,7 +34,10 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-image: url("../img/aa.jpg");
+}
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -47,7 +50,8 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: rgb(245, 167, 136);
+  color: rgb(245, 167, 136);
 }
 button:focus,
 button:focus-visible {

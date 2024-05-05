@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React, { useState, useEffect } from 'react'
 import './App.css'
+import LogIn from './pages/LogIn'
+import Rergister from './pages/Rergister'
+import { Routes, Route,Navigate, Link, json } from "react-router-dom"
+import Home from './pages/Home'
+import UserAddDetails from './pages/UserAddDetails'
+import Todos from './pages/Todos'
+import Posts from './pages/Posts'
+import Albums from './pages/Albums'
+import Photos from './pages/Photos'
+import UserDetailsPopup from './components/UserDetailsPopup'
+import PostDisplayPopUp from './components/PostDisplayPopUp'
+export const UserContext = React.createContext();
 
 function App() {
-  const [count, setCount] = useState(0)
+  const storedUserDetails = JSON.parse(localStorage.getItem('currentUser')) || {};
+
+  const [userDetails, setUserDetails] = useState(storedUserDetails);
+
+useEffect(() => {
+  const userDetailsWithoutWebsite = { ...userDetails };
+  delete userDetailsWithoutWebsite.website;
+
+  // Store the modified userDetails in local storage
+  localStorage.setItem('currentUser', JSON.stringify(userDetailsWithoutWebsite));
+}, [userDetails]);
+
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <UserContext.Provider value={{ userDetails, setUserDetails }}>
+        <Routes>
+        <Route path="/" index element={<Navigate to="/logIn" />} />
+          <Route path="/logIn" element={<LogIn />} />
+          <Route path="/register" element={<Rergister />} />
+          <Route path="/register/add-details" element={<UserAddDetails />} />
+          <Route path="/home" element={<Home />}>
+            <Route path="users/:userId">
+              <Route path="todos" element={<Todos />} />
+              <Route path="info" element={<UserDetailsPopup />} />
+              <Route path="posts" element={<Posts />} >
+                <Route path=":postId" element={<PostDisplayPopUp />} >
+                <Route path="comments" element={<PostDisplayPopUp />} />
+              </Route>
+              </Route>
+              <Route path="albums" element={<Albums />} />
+              <Route path="albums/:albumId/photos" element={<Photos />} />
+            </Route>
+          </Route>
+        </Routes>
+      </UserContext.Provider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
