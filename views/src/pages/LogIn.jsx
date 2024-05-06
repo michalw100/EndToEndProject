@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useContext,useEffect } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { UserContext } from '../App';
 import { useNavigate } from "react-router-dom"
 import '../CSS/Registation.css'
@@ -10,7 +10,7 @@ const LogIn = () => {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const handleLogInButton = () => {
-        fetch(`http://localhost:3000/users?username=${userName}&&password=${password}`)//חיפוש המשתמש 
+        fetch(`http://localhost:3000/users?username=${userName}&&password=${password}`)
             .then(response => response.json()) 
             .then((data) => {
                 if (!data) {

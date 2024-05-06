@@ -19,11 +19,11 @@ function App() {
   const [userDetails, setUserDetails] = useState(storedUserDetails);
 
 useEffect(() => {
-  const userDetailsWithoutWebsite = { ...userDetails };
-  delete userDetailsWithoutWebsite.website;
+  const userDetailsWithoutPassword = { ...userDetails };
+  delete userDetailsWithoutPassword.password;
 
   // Store the modified userDetails in local storage
-  localStorage.setItem('currentUser', JSON.stringify(userDetailsWithoutWebsite));
+  localStorage.setItem('currentUser', JSON.stringify(userDetailsWithoutPassword));
 }, [userDetails]);
 
 
