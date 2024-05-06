@@ -11,33 +11,32 @@ router.get("/", async (req, res) => {
         const users = await getAll();
         const userAddresses = await Promise.all(users.map(async (user) => {
         const userAddress = await addressController.getById(user.addressID);
-            delete user.passwordID;
-            delete user.addressID;
-            user.address = userAddress;
-            return user;
+        delete user.passwordID;
+        delete user.addressID;
+        user.address = userAddress;
+        return user;
         }));
         res.send(userAddresses);
     } catch (error) {
-        console.error("שגיאה בעת קבלת משתמשים וכתובות:", error);
-        res.status(500).send("שגיאה בעת טעינת המשתמשים וכתובות");
+        console.error("Error when getting users and addresses:", error);
+        res.status(404).send("Error when getting users and addresses");
     }
 });
+
 router.get("/", async (req, res) => {
     const userName = req.query.username;
     const password = req.query.password;
-    console.log(password);
-    // const password = await passwordController.getById(id);
-    res.send(await getByPasswordAndUserName(password, userName));
+    let user = await getByPasswordAndUserName(password, userName);
+    delete user.addressID;
+    delete user.passwordID;
+    res.send(user);
 });
 
 router.get("/:id", async (req, res) => {
     const id = req.params.id;
     const user = await getById(id);
-        // const userAddress = await addressController.getById(user.addressID);
-         delete user.passwordID;
-        // delete user.addressID;
-        // user.address = userAddress;
-    
+    delete user.passwordID;
+    delete user.addressID;    
     res.send(user);
 })
 
@@ -47,12 +46,6 @@ router.get("/:id/password", async (req, res) => {
     res.send(password)
 });
 
-// router.get("/?username=:userName&&password=${password}", async (req, res) => {
-//     const userName=req.params.userName;
-//     const password = req.params.password;
-//     // const password = await paswordController.getById(id);
-//     res.send(await getByPasswordAndUserName(password,userName));
-// });
 
 router.post("/", async (req, res) => {
     try {

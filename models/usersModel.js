@@ -22,10 +22,12 @@ async function getUser(id) {
         console.log(err);
     }
 }
+
 async function getUserByPasswordAndUserName(password,userName) {
     try {
         const sql = 'SELECT * FROM users natural join passwords where userName=? AND password=?';
         const result = await pool.query(sql, [userName,password]);
+        console.log(result[0][0])
         return result[0][0];
     } catch (err) {
         console.log(err);
@@ -34,8 +36,12 @@ async function getUserByPasswordAndUserName(password,userName) {
 
 async function createUser(userName, name, email, phone, street, city, zipcode, company, password) {
     try {
-        const newPassword = await createPassword(password);
-        const newAddress = await createAddress( street, city, zipcode);
+        // const newPassword = await createPassword(password);
+        // const newAddress = await createAddress( street, city, zipcode);
+        const sqlAqddress = "INSERT INTO addresses (`street`, `city`, `zipcode`) VALUES(?, ?, ?)";
+        const newAddress = await pool.query(sqlAqddress, [street, city, zipcode]);
+        const sqlPassword= "INSERT INTO passwords (password) VALUES(?)";
+        const newPassword = await pool.query(sqlPassword, [SHA256(password, 256)]);
         const sql = "INSERT INTO users (`userName`, `name`,`email`, `phone`, `addressID`, `company`, `passwordID`) VALUES(?, ?, ?, ?, ?, ?, ?)";
         const newUser = await pool.query(sql, [userName, name, email, phone, newAddress.insertId, company, newPassword.insertId]);
         return newUser[0];
