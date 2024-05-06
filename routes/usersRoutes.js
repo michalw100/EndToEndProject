@@ -26,6 +26,8 @@ router.use(express.urlencoded({ extended: true }));
 router.get("/", async (req, res) => {
     const userName = req.query.username;
     const password = req.query.password;
+    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     let user = await getByPasswordAndUserName(password, userName);
     delete user.addressID;
     delete user.passwordID;
@@ -35,6 +37,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     const id = req.params.id;
     const user = await getById(id);
+    console.log(user);
     delete user.passwordID;
     delete user.addressID;    
     res.send(user);
