@@ -1,4 +1,6 @@
 const pool = require('../DB.js');
+const bcrypt = require('bcrypt');
+
 const {createAddress, updateAddress, deleteAddress} = require('./addressesModel.js')
 const {createPassword, updatePassword, deletePassword} = require('./passwordsModel.js')
 
@@ -36,16 +38,14 @@ async function getUserByPasswordAndUserName(password,userName) {
 
 async function createUser(userName, name, email, phone, street, city, zipcode, company, password) {
     try {
-        // const newPassword = await createPassword(password);
-        // const newAddress = await createAddress( street, city, zipcode);
         const sqlAqddress = "INSERT INTO addresses (`street`, `city`, `zipcode`) VALUES(?, ?, ?)";
         const newAddress = await pool.query(sqlAqddress, [street, city, zipcode]);
-        const sqlPassword= "INSERT INTO passwords (password) VALUES(?)";
-        const newPassword = await pool.query(sqlPassword, [SHA256(password, 256)]);
+        const sqlPassword = "INSERT INTO passwords (password) VALUES(?)";
+        const hashedPassword = await bcrypt.hash(password, 10); 
+        const newPassword = await pool.query(sqlPassword, [hashedPassword]);
         const sql = "INSERT INTO users (`userName`, `name`,`email`, `phone`, `addressID`, `company`, `passwordID`) VALUES(?, ?, ?, ?, ?, ?, ?)";
-        const newUser = await pool.query(sql, [userName, name, email, phone, newAddress.insertId, company, newPassword.insertId]);
-        return newUser[0];
-
+        const newUser = await pool.query(sql, [userName, name, email, phone, newAddress[0].insertId, company, newPassword[0].insertId]);
+        return getUser(newUser[0].userID)
     } catch (err) {
         console.log(err);
     }
