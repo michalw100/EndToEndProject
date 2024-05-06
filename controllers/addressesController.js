@@ -6,5 +6,4 @@ async function getById(id) {
         throw err;
     }
 }
-
 module.exports = {  getById }

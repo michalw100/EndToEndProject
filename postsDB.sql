@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS passwords;
 
 CREATE TABLE passwords (
   passwordID int AUTO_INCREMENT,
-  password varchar(100000000) NOT NULL,
+  password varchar(1000) NOT NULL,
   PRIMARY KEY (passwordID)
 );
 

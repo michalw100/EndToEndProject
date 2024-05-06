@@ -31,7 +31,13 @@ async function getById(id) {
         throw err;
     }
 }
-
+async function getByUserName(username) {
+    try {
+        return model.getUserByUserName(username);
+    } catch (err) {
+        throw err;
+    }
+}
 async function deleteById(id){
     try {
         return model.deleteUser(id);
@@ -48,4 +54,4 @@ async function update(id, userName, name, email, phone, street, city, zipcode, c
     }
 }
 
-module.exports = { create, getAll, getById, deleteById, update,getByPasswordAndUserName }
+module.exports = { create, getAll, getById, deleteById, update,getByPasswordAndUserName,getByUserName }
