@@ -90,4 +90,4 @@ async function updateUser(id, userName, name, email, phone, street, city, zipcod
     }
 }
 
-module.exports = { updateUser, getUser, createUser, getUserByPasswordAndUserName }
+module.exports = { updateUser, getUser, createUser, getUserByPasswordAndUserName,getUserByUserName }

@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const { create, getById, update, getByPasswordAndUserName } = require('../controllers/usersController')
 const { create, getById, update, getByPasswordAndUserName, getByUserName } = require('../controllers/usersController')
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
