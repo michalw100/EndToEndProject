@@ -8,13 +8,14 @@ async function create(userName, name, email, phone, street, city, zipcode, compa
     }
 }
 
-async function getAll() {
-    try {
-        return model.getUsers();
-    } catch (err) {
-        throw err;
-    }
-}
+// async function getAll() {
+//     try {
+//         return model.getUsers();
+//     } catch (err) {
+//         throw err;
+//     }
+// }
+
 async function getByPasswordAndUserName(password,userName) {
     try {
         return model.getUserByPasswordAndUserName(password,userName);
@@ -32,20 +33,20 @@ async function getById(id) {
     }
 }
 
-async function deleteById(id){
+// async function deleteById(id){
+//     try {
+//         return model.deleteUser(id);
+//     } catch (err) {
+//         throw err;
+//     }
+// }
+
+async function update(id, userName, name, email, phone, street, city, zipcode, company) {
     try {
-        return model.deleteUser(id);
+        return model.updateUser(id, userName, name, email, phone, street, city, zipcode, company);
     } catch (err) {
         throw err;
     }
 }
 
-async function update(id, userName, name, email, phone, street, city, zipcode, company, password) {
-    try {
-        return model.updateUser(id, userName, name, email, phone, street, city, zipcode, company, password);
-    } catch (err) {
-        throw err;
-    }
-}
-
-module.exports = { create, getAll, getById, deleteById, update,getByPasswordAndUserName }
+module.exports = { create, getById, update,getByPasswordAndUserName }

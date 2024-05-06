@@ -1,19 +1,16 @@
 const pool = require('../DB.js');
 const bcrypt = require('bcrypt');
 
-const {createAddress, updateAddress, deleteAddress} = require('./addressesModel.js')
-const {createPassword, updatePassword, deletePassword} = require('./passwordsModel.js')
+// async function getUsers() {
+//     try {
+//         const sql = 'SELECT * FROM users';
+//         const [rows, fields] = await pool.query(sql);
+//         return rows;
 
-async function getUsers() {
-    try {
-        const sql = 'SELECT * FROM users';
-        const [rows, fields] = await pool.query(sql);
-        return rows;
-
-    } catch (err) {
-        console.log(err);
-    }
-}
+//     } catch (err) {
+//         console.log(err);
+//     }
+// }
 
 async function getUser(id) {
     try {
@@ -27,10 +24,10 @@ async function getUser(id) {
 
 async function getUserByPasswordAndUserName(password,userName) {
     try {
-        const sql = 'SELECT * FROM users natural join passwords where userName=? AND password=?';
-        const hashedPassword = await bcrypt.hash(password, 10); 
-        const result = await pool.query(sql, [userName, hashedPassword]);
-        return result[0][0];
+        const sql = 'SELECT * FROM users natural join passwords where userName=?';
+        const result = await pool.query(sql, [userName]);
+        if(bcrypt.compare(password, result[0][0].password))
+            return result[0][0];
     } catch (err) {
         console.log(err);
     }
@@ -51,27 +48,28 @@ async function createUser(userName, name, email, phone, street, city, zipcode, c
     }
 }
 
+// async function deleteUser(id) {
+//     try {
+//         console.log(32)
+//         const user = await getUser(id);
+//         const sql = `DELETE FROM users WHERE userID = ?`;
+//         const result = await pool.query(sql, [id]);
+//         const sqlAddress = `DELETE FROM addresses WHERE addressID = ?`;
+//         const resultAddress = await pool.query(sqlAddress, [id]);
+//         const sqlPassword = `DELETE FROM passwords WHERE passwordID = ?`;
+//         const resultPassword = await pool.query(sqlPassword, [id]);
+//         } catch (err) {
+//         console.error('Error deleting user:', err);
+//     }
+// }
 
-async function deleteUser(id) {
+async function updateUser(id, userName, name, email, phone, street, city, zipcode, company) {
     try {
         const user = await getUser(id);
-        const sql = `DELETE FROM users WHERE userID = ?`;
-        const result = await pool.query(sql, [id]);
-        const address =  deleteAddress(user.addressID);
-        const password = await deletePassword(user.passwordID);
-    } catch (err) {
-        console.error('Error deleting user:', err);
-        throw err;
-    }
-}
-
-async function updateUser(id, userName, name, email, phone, street, city, zipcode, company, password) {
-    try {
-
-        const user = await getUser(id);
-        console.log(user)
-        const address = await updateAddress(user.addressID, street, city, zipcode);
-        const pass = await updatePassword(password);
+        const sqlAddress = `UPDATE addresses SET street = ?, city = ?, zipcode = ? WHERE addressID = ?`;
+        const resultAddres = await pool.query(sqlAddress, [street, city, zipcode, user.addressID]); 
+        // const sqlPassword = `UPDATE passwords SET password WHERE passwordsID = ?`;
+        // const resultPassword = await pool.query(sql, [SHA2(password, 256), id]);
         const sql = `UPDATE users SET userName = ?, name = ?, email = ?, phone = ?, company = ?, addressID = ?, passwordID =? WHERE userID = ?`;
         const result = await pool.query(sql, [userName, name, email, phone, company, user.addressID, user.passwordID, id]);
         return result;
@@ -82,4 +80,4 @@ async function updateUser(id, userName, name, email, phone, street, city, zipcod
     }
 }
 
-module.exports = { updateUser, getUser, getUsers, deleteUser, createUser,getUserByPasswordAndUserName }
+module.exports = { updateUser, getUser, createUser, getUserByPasswordAndUserName }

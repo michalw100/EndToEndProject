@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { create, getAll, getById, deleteById, update,getByPasswordAndUserName } = require('../controllers/usersController')
-const addressController = require('../controllers/addressesController')
-const paswordController = require('../controllers/passwordsContrller');
+const { create, getById, update, getByPasswordAndUserName } = require('../controllers/usersController')
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
@@ -65,10 +63,10 @@ router.put("/:id", async (req, res) => {
     res.send(await getById(id));
 });
 
-router.delete("/:id", async (req, res) => {
-    const id = req.params.id;
-    const response = await deleteById(id);
-    res.send();
-});
+// router.delete("/:id", async (req, res) => {
+//     const id = req.params.id;
+//     const response = await deleteById(id);
+//     res.send();
+// });
 
 module.exports = router;
