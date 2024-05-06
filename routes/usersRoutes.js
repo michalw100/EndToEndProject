@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { create, getById, update, getByPasswordAndUserName } = require('../controllers/usersController')
+const { create, getById, update, getByPasswordAndUserName, getByUserName } = require('../controllers/usersController')
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
@@ -22,13 +23,21 @@ router.use(express.urlencoded({ extended: true }));
 // });
 
 router.get("/", async (req, res) => {
+    let user = {};
     const userName = req.query.username;
     const password = req.query.password;
-    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    let user = await getByPasswordAndUserName(password, userName);
-    delete user.addressID;
-    delete user.passwordID;
+    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+    if (userName)
+        if (password) {
+            user = await getByPasswordAndUserName(password, userName);
+            delete user.addressID;
+            delete user.passwordID;
+        }
+
+        else {
+            user = await getByUserName(userName);
+        }
     res.send(user);
 });
 
@@ -37,7 +46,7 @@ router.get("/:id", async (req, res) => {
     const user = await getById(id);
     console.log(user);
     delete user.passwordID;
-    delete user.addressID;    
+    delete user.addressID;
     res.send(user);
 })
 
@@ -49,6 +58,9 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
+        console.log(req.body.password);
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.header("Access-Control-Allow-Origin", "http://localhost:5173");
         const response = await create(req.body.userName, req.body.name, req.body.email, req.body.phone, req.body.street, req.body.city, req.body.zipcode, req.body.company, req.body.password);
         res.send(await getById(response.insertId));
     } catch (err) {

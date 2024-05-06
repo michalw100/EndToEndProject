@@ -21,6 +21,15 @@ async function getUser(id) {
         console.log(err);
     }
 }
+async function getUserByUserName(userName) {
+    try {
+        const sql = 'SELECT * FROM users natural join addresses where userName=?';
+        const result = await pool.query(sql, [userName]);
+        return result[0];
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 async function getUserByPasswordAndUserName(password,userName) {
     try {
@@ -35,6 +44,7 @@ async function getUserByPasswordAndUserName(password,userName) {
 
 async function createUser(userName, name, email, phone, street, city, zipcode, company, password) {
     try {
+        console.log("post");
         const sqlAqddress = "INSERT INTO addresses (`street`, `city`, `zipcode`) VALUES(?, ?, ?)";
         const newAddress = await pool.query(sqlAqddress, [street, city, zipcode]);
         const sqlPassword = "INSERT INTO passwords (password) VALUES(?)";

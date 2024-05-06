@@ -27,13 +27,13 @@ const Rergister = () => {
                     alert('Password is not strong enough.');
                 }
                 else {
-                    console.log(userDetails)
                     fetch('http://localhost:3000/users', {
+                          mode: 'no-cors' ,
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ username: userName, website: password }),
+                        body: JSON.stringify({ username: userName, password: password }),
                     })
                         .then(response => response.json())  // Parse the JSON from the response
                         .then(data => {
