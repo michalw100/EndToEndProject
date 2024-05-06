@@ -6,26 +6,28 @@ const paswordController = require('../controllers/passwordsContrller');
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-router.get("/", async (req, res) => {
-    try {
-        const users = await getAll();
-        const userAddresses = await Promise.all(users.map(async (user) => {
-        const userAddress = await addressController.getById(user.addressID);
-        delete user.passwordID;
-        delete user.addressID;
-        user.address = userAddress;
-        return user;
-        }));
-        res.send(userAddresses);
-    } catch (error) {
-        console.error("Error when getting users and addresses:", error);
-        res.status(404).send("Error when getting users and addresses");
-    }
-});
+// router.get("/", async (req, res) => {
+//     try {
+//         const users = await getAll();
+//         const userAddresses = await Promise.all(users.map(async (user) => {
+//         const userAddress = await addressController.getById(user.addressID);
+//         delete user.passwordID;
+//         delete user.addressID;
+//         user.address = userAddress;
+//         return user;
+//         }));
+//         res.send(userAddresses);
+//     } catch (error) {
+//         console.error("Error when getting users and addresses:", error);
+//         res.status(404).send("Error when getting users and addresses");
+//     }
+// });
 
 router.get("/", async (req, res) => {
     const userName = req.query.username;
     const password = req.query.password;
+    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     let user = await getByPasswordAndUserName(password, userName);
     delete user.addressID;
     delete user.passwordID;
@@ -35,6 +37,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     const id = req.params.id;
     const user = await getById(id);
+    console.log(user);
     delete user.passwordID;
     delete user.addressID;    
     res.send(user);

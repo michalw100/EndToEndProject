@@ -11,18 +11,18 @@ const LogIn = () => {
     const [password, setPassword] = useState('');
     const handleLogInButton = () => {
         fetch(`http://localhost:3000/users?username=${userName}&&password=${password}`)//חיפוש המשתמש 
-            .then((response) => response.json()) 
-            .then((answer) => {
-                if (!answer[0]) {//אם לא חזרה תשובה זה אומר שיש בעיה בבקשת המשתמש
+            .then(response => response.json()) 
+            .then((data) => {
+                if (!data) {//אם לא חזרה תשובה זה אומר שיש בעיה בבקשת המשתמש
                     alert("one or more of the details are wrong")
                 }
                 else {
-                    setUserDetails(answer[0]);//מעדכן את הפרטים             
+                    setUserDetails(data);//מעדכן את הפרטים             
                     navigate(`/home/users/${userDetails.id}`);
                 }
             })
             .catch(error => {
-                alert("Error fetching :", error);
+                alert("Error fetching :"+ error);
              });
      }
    
