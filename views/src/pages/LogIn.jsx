@@ -13,7 +13,7 @@ const LogIn = () => {
         fetch(`http://localhost:3000/users?username=${userName}&&password=${password}`)//חיפוש המשתמש 
             .then(response => response.json()) 
             .then((data) => {
-                if (!data) {//אם לא חזרה תשובה זה אומר שיש בעיה בבקשת המשתמש
+                if (!data) {
                     alert("one or more of the details are wrong")
                 }
                 else {

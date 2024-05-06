@@ -44,7 +44,7 @@ async function createUser(userName, name, email, phone, street, city, zipcode, c
         const newPassword = await pool.query(sqlPassword, [hashedPassword]);
         const sql = "INSERT INTO users (`userName`, `name`,`email`, `phone`, `addressID`, `company`, `passwordID`) VALUES(?, ?, ?, ?, ?, ?, ?)";
         const newUser = await pool.query(sql, [userName, name, email, phone, newAddress[0].insertId, company, newPassword[0].insertId]);
-        return getUser(newUser[0].userID)
+        return newUser[0];
     } catch (err) {
         console.log(err);
     }
