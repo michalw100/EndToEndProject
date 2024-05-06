@@ -25,13 +25,14 @@ router.get("/", async (req, res) => {
     let user = {};
     const userName = req.query.username;
     const password = req.query.password;
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
     if (userName)
         if (password) {
             user = await getByPasswordAndUserName(password, userName);
-            delete user.addressID;
-            delete user.passwordID;
+            if(user)
+                {
+                    delete user.addressID;
+                    delete user.passwordID;
+                }
         }
 
         else {
@@ -57,9 +58,6 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-        console.log(req.body.password);
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        res.header("Access-Control-Allow-Origin", "http://localhost:5173");
         const response = await create(req.body.userName, req.body.name, req.body.email, req.body.phone, req.body.street, req.body.city, req.body.zipcode, req.body.company, req.body.password);
         res.send(await getById(response.insertId));
     } catch (err) {
