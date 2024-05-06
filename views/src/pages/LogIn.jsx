@@ -17,7 +17,7 @@ const LogIn = () => {
                     alert("one or more of the details are wrong")
                 }
                 else {
-                    setUserDetails(data);//מעדכן את הפרטים             
+                    setUserDetails(data);         
                     navigate(`/home/users/${userDetails.id}`);
                 }
             })

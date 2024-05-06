@@ -28,7 +28,8 @@ async function getUser(id) {
 async function getUserByPasswordAndUserName(password,userName) {
     try {
         const sql = 'SELECT * FROM users natural join passwords where userName=? AND password=?';
-        const result = await pool.query(sql, [userName,password]);
+        const hashedPassword = await bcrypt.hash(password, 10); 
+        const result = await pool.query(sql, [userName, hashedPassword]);
         return result[0][0];
     } catch (err) {
         console.log(err);
