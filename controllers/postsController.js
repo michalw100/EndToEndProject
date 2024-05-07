@@ -16,6 +16,14 @@ async function getAll() {
     }
 }
 
+async function getByUserID(userID) {
+    try {
+        return model.getPostsByUserID(userID);
+    } catch (err) {
+        throw err;
+    }
+}
+
 async function getById(id) {
     try {
         return model.getPost(id);
@@ -39,4 +47,4 @@ async function update(id,title, body, userID) {
     }
 }
 
-module.exports = { create, getAll, getById,deleteById,update }
+module.exports = { create, getAll, getById, deleteById, update, getByUserID }

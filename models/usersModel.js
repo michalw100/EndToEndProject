@@ -31,12 +31,31 @@ async function getUserByUserName(userName) {
     }
 }
 
-async function getUserByPasswordAndUserName(password,userName) {
+// async function getUserByPasswordAndUserName(password,userName) {
+//     try {
+//         console.log(password)
+//         const sql = 'SELECT * FROM users natural join passwords where userName=?';
+//         const result = await pool.query(sql, [userName, password]);
+//         console.log(result[0][0])
+//         if(result[0][0] && bcrypt.compare(password, result[0][0].password))
+//             return result[0][0];
+//         return null;
+//     } catch (err) {
+//         console.log(err);
+//     }
+// }
+
+async function getUserByPasswordAndUserName(password, userName) {
     try {
-        const sql = 'SELECT * FROM users natural join passwords where userName=?';
+        const sql = 'SELECT * FROM users NATURAL JOIN passwords NATURAL JOIN addresses WHERE userName=?';
         const result = await pool.query(sql, [userName]);
-        if(bcrypt.compare(password, result[0][0].password))
-            return result[0][0];
+        console.log(result);
+        for (const user of result[0]) {
+            if (bcrypt.compareSync(password, user.password)) {
+                return user;
+            }
+        }
+        return {};
     } catch (err) {
         console.log(err);
     }

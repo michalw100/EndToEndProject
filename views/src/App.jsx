@@ -1,57 +1,72 @@
-import React, { useState, useEffect } from 'react'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { createContext, useState, useEffect } from 'react';
 import LogIn from './pages/LogIn'
-import Rergister from './pages/Rergister'
-import { Routes, Route,Navigate, Link, json } from "react-router-dom"
-import Home from './pages/Home'
-import UserAddDetails from './pages/UserAddDetails'
-import Todos from './pages/Todos'
-import Posts from './pages/Posts'
-import Albums from './pages/Albums'
-import Photos from './pages/Photos'
-import UserDetailsPopup from './components/UserDetailsPopup'
-import PostDisplayPopUp from './components/PostDisplayPopUp'
-export const UserContext = React.createContext();
+import SignUp from './pages/SignUp'
+import HomePage from './pages/HomePage'
+import UserDetails from './pages/UserDetails'
+import Info from "./pages/Info"
+import Todos from "./pages/Todos"
+import Posts from "./pages/Posts"
+import Albums from "./pages/Albums"
+import Logout from "./pages/Logout"
+import Comments from "./pages/Comments";
+import Photos from "./pages/Photos";
+import './App.css'
+
+export const UserContext = createContext(null);
 
 function App() {
-  const storedUserDetails = JSON.parse(localStorage.getItem('currentUser')) || {};
 
-  const [userDetails, setUserDetails] = useState(storedUserDetails);
+  const [user, setUser] = useState(
+   {  
+      userID: "",
+      name: "",
+      userName: "",
+      email: "",
+      street: "",
+      city: "",
+      zipcode: "",
+      phone: "",
+      password: "",
+      company: ""
+    }
+  );
 
-useEffect(() => {
-  const userDetailsWithoutPassword = { ...userDetails };
-  delete userDetailsWithoutPassword.password;
-
-  // Store the modified userDetails in local storage
-  localStorage.setItem('currentUser', JSON.stringify(userDetailsWithoutPassword));
-}, [userDetails]);
-
+  useEffect(() => {
+    if ( localStorage.getItem('currentUser') != null) {
+      const currentUser = localStorage.getItem('currentUser');
+      const userFromLocalStorage = JSON.parse(localStorage.getItem(currentUser));
+      setUser(userFromLocalStorage);
+    }
+  }, [])
 
   return (
-    <>
-      <UserContext.Provider value={{ userDetails, setUserDetails }}>
+    <UserContext.Provider value={user}>
+      <BrowserRouter basename="/">
         <Routes>
-        <Route path="/" index element={<Navigate to="/logIn" />} />
-          <Route path="/logIn" element={<LogIn />} />
-          <Route path="/register" element={<Rergister />} />
-          <Route path="/register/add-details" element={<UserAddDetails />} />
-          <Route path="/home" element={<Home />}>
-            <Route path="users/:userId">
-              <Route path="todos" element={<Todos />} />
-              <Route path="info" element={<UserDetailsPopup />} />
-              <Route path="posts" element={<Posts />} >
-                <Route path=":postId" element={<PostDisplayPopUp />} >
-                <Route path="comments" element={<PostDisplayPopUp />} />
-              </Route>
-              </Route>
-              <Route path="albums" element={<Albums />} />
-              <Route path="albums/:albumId/photos" element={<Photos />} />
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<LogIn setUser={setUser} />} />
+          <Route path="/register" element={<SignUp setUser={setUser} />} />
+          <Route path="/user-details" element={<UserDetails setUser={setUser} />} />
+          <Route path="/home" element={<HomePage />}>
+            <Route path="users/:userId/info" element={<Info />} />
+            <Route path="users/:userId/todos" element={<Todos />} />
+            <Route path="users/:userId/todos/:todoId" element={<Todos />} />
+            <Route path="users/:userId/posts" element={<Posts />} />
+            <Route path="users/:userId/posts/:postId" element={<Posts />}>
+              <Route path="comments" element={<Comments />} />
+              <Route path="comments/:commentId" element={<Comments />} />
             </Route>
+            <Route path="users/:userId/albums" element={<Albums />} />
+            <Route path="users/:userId/albums/:albumId" element={<Albums />} />
+            <Route path="users/:userId/albums/:albumId/photos" element={<Photos />} />
+            <Route path="users/:userId/albums/:albumId/photos/:photoId" element={<Photos />} />
+            <Route path="logout" element={<Logout setUser={setUser} />} />
           </Route>
         </Routes>
-      </UserContext.Provider>
-    </>
-  );
+      </BrowserRouter>
+    </UserContext.Provider>
+  )
 }
 
-export default App;
+export default App

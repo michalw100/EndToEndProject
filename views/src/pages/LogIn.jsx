@@ -1,62 +1,47 @@
-import React from 'react'
-import { useState, useContext, useEffect } from 'react'
-import { UserContext } from '../App';
-import { useNavigate } from "react-router-dom"
-import '../CSS/Registation.css'
-const LogIn = () => {
+import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom"
+import '../App.css'
+
+
+function LogIn({ setUser }) {
+
     const navigate = useNavigate();
-    const context = useContext(UserContext);
-    const { userDetails,setUserDetails } = context;
+    const [loginError, setLoginError] = useState('');
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
-    const handleLogInButton = () => {
+    let user;
+
+    const handleLogin=()=> {
         fetch(`http://localhost:3000/users?username=${userName}&&password=${password}`)
-            .then(response => response.json()) 
-            .then((data) => {
-                if (!data) {
-                    alert("one or more of the details are wrong")
+            .then(response => response.json())
+            .then(data => {
+                user = data;
+                if (user && user.userID != null) {
+                    setLoginError("");
+                    localStorage.setItem("currentUser", user.userID);
+                    const userWithoutPassword = { ...user };
+                    delete userWithoutPassword.password;
+                    localStorage.setItem(user.userID, JSON.stringify(userWithoutPassword));
+                    setUser(user);
+                    navigate('/home');
                 }
-                else {
-                    setUserDetails(data);         
-                    navigate(`/home/users/${userDetails.id}`);
-                }
+                else if (!userName || !password)
+                    setLoginError('Please fill in all fields.');
+                else
+                    setLoginError("Username or password is not correct")
             })
-            .catch(error => {
-                alert("Error fetching :"+ error);
-             });
-     }
-   
-    // useEffect(() => {
-    //     console.log(userDetails);
-    //     if(userDetails!=={})
-    //     navigate(`/home/users/${userDetails.id}`)
-    // }, []);
-    
+    }
+
     return (
-        <div>
-            <form id="form">
-                <ul id="tabs" className="register-buttons active">
-                    <li className="tab active">
-                        <a href="/register" className="link-btn">Sign Up</a>
-                    </li>
-                    <li className="tab">
-                        <a className="link-btn">Log In</a>
-                    </li>
-                </ul>
-                <div>
-                    <h1>Welcome Back!</h1>
-                    <div className="User-fill">
-                        <input className="input" id="userName" onChange={(e)=>setUserName(e.target.value)} value={userName} type="text" placeholder="UserName" required />
-                    </div>
-                    <div className="User-fill">
-                        <input className="input" onChange={(e)=>setPassword(e.target.value)} value={password}  id="userPassword" type="password" placeholder="Password" required />
-                    </div>
-                    <button type="button" id="logIn" onClick={handleLogInButton} className="button button-block">LogIn</button>
-
-                </div>
-            </form>
+        <div className='registration'>
+            <h2 className="title">Log in</h2><br />
+            <input type="text" className='input' value={userName} placeholder="user name" onChange={(e) => setUserName(e.target.value)} /><br />
+            <input type="password" className='input' value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)} /><br />
+            {loginError &&
+                <p className='error' style={{ color: "red" }}>{loginError}</p>}
+            <button className="btnOkLogIn" onClick={handleLogin}>Connect</button>
+            <Link className='link' to="/register" >Dont have an account? Sign up</Link>
         </div>
-    )
+    );
 }
-
 export default LogIn

@@ -1,57 +1,138 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
-
 #root {
+  margin: 0px;
+  direction: ltr;
   width: 100%;
-  /* margin: 0 auto; */
+  height: 100%;
+
+}
+
+.body {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout {
+  width: 380px;
+  max-width: 380px;
+  padding: 1rem;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  direction: ltr;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.registration {
+  width: 380px;
+  max-width: 380px;
   padding: 2rem;
-  text-align: center;
-  padding-left: 340px;
-  padding-right: 0px;
-  margin-top: 0PX;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  direction: ltr;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-top: 5%;
+  /* background: rgb(240, 205, 205); */
+
 }
-html{
+
+.input:focus {
+  border-color: #fa5fcc;
+  background: #ffffff;
+}
+
+.input {
+  display: block;
   width: 100%;
-}
-body {
-  font-family: 'Quicksand';
-  background-image: url("../img/aa.jpg");
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #dddddd;
+  outline: none;
+  background: #eeeeee;
+  transition: 0.2s, black 0.2s;
+  margin-bottom: 0.5rem;
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.Connect,
+.btnOkSignUp,
+.btnOkLogIn {
+  width: 100%;
+  padding: 1rem 2rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  background: #fa5fcc;
+  margin-bottom: 1rem;
 }
 
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.button:hover {
+  background: #fa5fcc;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
+.button:active {
+  transform: scale(0.98);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.text {
+  text-align: center;
 }
 
-.card {
-  padding: 2em;
+.link {
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.read-the-docs {
-  color: #888;
+.error {
+  font-weight: bold;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.title {
+  text-align: center;
+  color: #000000;
+  font-size: 40px;
+}
+
+.btnCancel,
+.btnConfirm {
+  font-weight: bold;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  background: #fa5fcc;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+}
+
+li {
+  list-style: none;
+}
+
+button {
+ 
+  margin: 4px;
+}
+
+.btn{
+  border-color:  #3a3939;
+  border-radius: 4px;
+  border-style: groove;
 }

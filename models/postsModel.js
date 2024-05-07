@@ -13,6 +13,19 @@ async function getPosts() {
 
 }
 
+async function getPostsByUserID(userID) {
+    try {
+        const sql = 'SELECT * FROM posts WHERE userID=?';
+        const [rows, fields] = await pool.query(sql, [userID]);
+        console.log(rows);
+        return rows;
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+
 async function getPost(id) {
     try {
         const sql = 'SELECT * FROM posts where postID=?';
@@ -60,4 +73,4 @@ async function updatePost(id,title,body,userID) {
     }
 }
 
-module.exports = { updatePost, getPost, getPosts, deletePost, createPost }
+module.exports = { updatePost, getPost, getPosts, deletePost, createPost, getPostsByUserID }

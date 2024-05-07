@@ -16,7 +16,11 @@ router.get("/:id", async(req, res) => {
 
 router.post("/", async(req, res) => {
     try{
-        const response=await controller.create(req.body.postID,req.body.body,req.body.email,req.body.commentName)
+        console.log(req.body.email)
+        console.log(req.body.body)
+        console.log(req.body.postID)
+        console.log(req.body.commentName)
+        const response=await controller.create(req.body.postID, req.body.body ,req.body.email, req.body.commentName)
         res.send(await controller.getById(response.insertId));
     }catch(err){
         console.log("error"+err);

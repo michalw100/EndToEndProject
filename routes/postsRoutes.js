@@ -5,16 +5,24 @@ router.use (express.json());
 router.use(express.urlencoded({ extended: true }));
 
 router.get("/", async(req, res) => {
-    res.send(await controller.getAll());
+    const userID = req.query.userID;
+    if(userID)
+    {
+        res.send(await controller.getByUserID(userID));
+    }
+    else
+        res.send(await controller.getAll());
 })
+
 router.get("/:id", async(req, res) => {
     const id = req.params.id;
     const post = await controller.getById(id);
     res.send(post)
 });
+
 router.post("/", async(req, res) => {
     try{
-        const response=await controller.create(req.body.title,req.body.body,req.body.userID)
+        const response = await controller.create(req.body.title, req.body.body, req.body.userID)
         res.send(await controller.getById(response.insertId));
     }catch(err){
         console.log("error");

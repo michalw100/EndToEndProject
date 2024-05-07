@@ -1,155 +1,134 @@
-import React from 'react'
-import { useState, useContext, useEffect } from 'react'
-import { UserContext } from '../App';
-import PostAtScreen from '../components/PostAtScreen';
-import '../CSS/popup.css';
-import '../CSS/list.css';
+import React, { useEffect, useContext, useState } from 'react';
+import { UserContext } from "../App.jsx"
+import Post from "../components/Post.jsx"
+import MyImage from '../images/Loading.gif';
+
 const Posts = () => {
-    const context = useContext(UserContext);
-    const { userDetails } = context;
-    const [post, setPost] = useState({ userId: userDetails.id, title: "", body: "" });
-    const [postsArray, setPostsArray] = useState([]);
-    const [allPostsArray, setAllPostsArray] = useState([]);
-    const [enableAdd, setEnableAdd] = useState(false);
-    const [enableSearch, setEnableSearch] = useState(false);
-    const [searchID, setSearchID] = useState(0);
-    const [searchTitle, setSearchTitle] = useState("");
-    const [searchArrayPosts, setSearchArrayPosts] = useState([]);
-    async function getPosts() {// פונקציה אסינכרונית בגלל שאני רוצה לחכות לתשובבה  מהשרת כדי להציג את הפוסט
-        try {
-            const data = await fetch(`http://localhost:3000/posts?userId=${userDetails.id}`);
-            const posts = await data.json();
-            setPostsArray(posts);
-            setSearchArrayPosts(posts);
-            //  setSearchArrayPosts(posts)
-        }
-        catch (error) {
-            console.log(error);
-            alert(error)
-            // setMessage("The Posts Aren't Found");
-        }
-    }
-    const getAllPost = async () => {
-        const data = await fetch(`http://localhost:3000/posts`);
-        const posts = await data.json();
-        setAllPostsArray(posts);
-    }
-    
-    useEffect(() => {
-        getPosts();
-        getAllPost();
-    }, [])
-    async function handleAddPost() {
-        try {
-            const data = await fetch(`http://localhost:3000/posts`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(post),
-            });
+  const user = useContext(UserContext);
+  const [userPosts, setUserPosts] = useState(null);
+  const [allPosts, setAllPosts] = useState(null);
+  const [searchBy, setSearchBy] = useState('');
+  const [addPost, setAddPost] = useState(false);
+  const [newPost, setNewPost] = useState({ title: '', body: '' });
+  const [allPostsLoaded, setAllPostsLoaded] = useState(false)
+  const [showAllPosts, setShowAllPosts] = useState(false);
+  let returnMassege = "";
 
-            const postJson = await data.json();
-            setEnableAdd(false);
-            setPostsArray(prevTodosArray => [...prevTodosArray, postJson]);
-            setSearchArrayPosts(prevTodosArray => [...prevTodosArray, postJson])
-            setPost(prevTodo => ({ ...prevTodo, title: "" }));
-        } catch (error) {
-            console.log(error);
-            alert(error);
-        }
-    }
-    const handleUpdatePost = (updatedPost, index) => {
-        fetch(`http://localhost:3000/posts/${updatedPost.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(updatedPost),
-        })
-            .then(() => {
+  useEffect(() => {
+    fetch(`http://localhost:3000/posts?userID=${user.userID}`)
+      .then(res => res.json())
+      .then(data => {
+        setUserPosts(data);
+      })
+  }, []);
 
-                let temp = [...postsArray]// יצירת מערך עזר עם שינוי של האלבום המעודכן
-                temp[index] = updatedPost;
-                setPostsArray(temp);
-                setSearchArrayPosts(temp);
-            });
-    };
-    
-    const handleDeletePost = (id) => {
-        fetch(`http://localhost:3000/posts/${id}`, {
-            method: 'DELETE',
+  useEffect(() => {
+    if (allPosts == null && allPostsLoaded == true) {
+      fetch(`http://localhost:3000/posts`)
+        .then(res => res.json())
+        .then(data => {
+          setAllPosts(data);
         })
-            .then(() => {
-                setPostsArray(postsArray.filter((post) => post.id != id))
-                setSearchArrayPosts(postsArray.filter((post) => post.id != id))
-            });
+    }
+  }, [allPostsLoaded]);
+
+  if ((!showAllPosts && !userPosts) || (showAllPosts && !allPosts)) 
+    return <img src={MyImage} />
+  
+  if ((!showAllPosts && userPosts.length === 0) || (showAllPosts && allPosts.length === 0)) 
+    returnMassege = <h1>No posts found.</h1>
+  
+  const handleSearchChange = (event) => {
+    setSearchBy(event.target.value);
+  };
+
+  const filterPosts = () => {
+    let filteredPosts = showAllPosts ? allPosts : userPosts;;
+    let posts = showAllPosts ? allPosts : userPosts;
+    if (searchBy) {
+       filteredPosts = posts.filter(post =>
+        post.title.toLowerCase().includes(searchBy.toLowerCase()) ||
+        post.postID.toString().includes(searchBy)
+      );
+    }
+    return filteredPosts;
+  };
+
+  const addPostClicked = () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...newPost, userID: user.userID })
     };
 
-    useEffect(() => {
-        if (enableSearch) {
-            let newSearchArrayPosts = [];
+    fetch('http://localhost:3000/posts', requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        showAllPosts ? setAllPosts([...allPosts, data]) : setUserPosts([...userPosts, data]) ;
+        setAddPost(false);
+        setNewPost({ title: '', body: '' });
+      })
+      .catch(error => console.error('There was an error!', error));
+  };
 
-            if (searchID) {
-                postsArray.forEach((post) => { if (post.id == searchID) newSearchArrayPosts = [{ ...post }] })
-                setSearchArrayPosts(newSearchArrayPosts);
-            }
+  const cancelAddPost = () => {
+    setAddPost(false);
+    setNewPost({ title: '', body: '' });
+  };
 
-            if (searchTitle) {
-                const titleFilteredPosts = postsArray.filter(post => post.title.includes(searchTitle));
-                newSearchArrayPosts = [...newSearchArrayPosts, ...titleFilteredPosts];
-                setSearchArrayPosts(newSearchArrayPosts);
-            }
-        }
-        else {
-            setSearchArrayPosts(postsArray);
-        }
-    }, [searchID, enableSearch, searchTitle, postsArray, setSearchArrayPosts]);
+  return (
+    <div className='posts'>
+      <h1>Posts</h1>
+      {returnMassege}
+      {addPost ? (
+        <div className='addPost'>
+          <input className='postInput'
+            type="text"
+            value={newPost.title}
+            onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
+            placeholder="Post title"
+          /><br />
+          <input className='postInput'
+            type="text"
+            value={newPost.body}
+            onChange={(e) => setNewPost({ ...newPost, body: e.target.value })}
+            placeholder="Post body"
+          /><br />
+          <button className="btn" onClick={addPostClicked}>Add Post</button>
+          <button className="btn" onClick={cancelAddPost}>Cancel</button>
+        </div>
+      ) : (
+        <button id="plus" className='btnMiddle' onClick={() => setAddPost((prev) => !prev)}>➕ Add Post</button>
+      )}
 
+      {showAllPosts ? (
+        <button id="plus" className='btnMiddle' onClick={() => setShowAllPosts(false)}>show my posts</button>
+      ) : (
+        <button id="plus" className='btnMiddle' onClick={() => { setShowAllPosts(true), setAllPostsLoaded(true) }}>show all posts</button>
+      )}
+      <div>
 
+        <div className='search'>
+          <label htmlFor="search">Search: </label>
+          <input
+            type="text"
+            id="search"
+            value={searchBy}
+            onChange={handleSearchChange}
+          />
+        </div>
 
-    const handleGetAllPosts = () => {
-        setSearchArrayPosts(allPostsArray);
-    }
-    const handleGetMyPosts = () => {
-        setSearchArrayPosts(postsArray);
-    }
-    return (
-        <>
-            <h1>All Your Posts</h1>
-            <button className='btnPost' onClick={() => { setEnableSearch(!enableSearch); }}>Search</button>
-            <button className='btnPost' onClick={handleGetAllPosts}>All Posts</button>
-            <button className='btnPost' onClick={handleGetMyPosts}>MY Posts</button>
-            {enableSearch && <>
-                <input type='number' onChange={(event) => setSearchID(event.target.value)} value={searchID} placeholder='FOR SEARCH ID' />
-                <input type='text' onChange={(event) => setSearchTitle(event.target.value)} value={searchTitle} placeholder='FOR SEARCH TITLE' />
-            </>}
-            <button className='btnPost' onClick={() => setEnableAdd((prev) => !prev)}>Add Post</button>
-            <div id="boxAdd">
-                {enableAdd && <>
-                    <input
-                        className='inputFill'
-                        type='text'
-                        placeholder='Title'
-                        value={post.title}
-                        onChange={(e) => { setPost({ ...post, title: e.target.value }); }}
-                    />
-                    <input
-                        className='inputFill'
-                        type='text'
-                        placeholder='Body'
-                        value={post.body}
-                        onChange={(e) => { setPost({ ...post, body: e.target.value }); }}
-                    />
-
-                    <button className='btnPost' onClick={handleAddPost}>Add</button>
-                    <button className='btnPost' onClick={() => { setEnableAdd(false); setPost({ userId: userDetails.id, title: "", body: "" }) }}>Cancele</button></>}
-            </div>
-            <div id="boxShow">
-                {searchArrayPosts.map((post, index) => <PostAtScreen key={index} index={index} post={post} handleDeletePost={handleDeletePost} handleUpdatePost={handleUpdatePost} />)}
-            </div>
-        </>
-    )
+         <div className='allPost'>
+          {filterPosts().map((post) => (
+            <Post key={post.postID}
+              post={post}
+              setPosts={showAllPosts ? setAllPosts : setUserPosts}
+              posts={showAllPosts ? allPosts : userPosts} />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
 }
 
-export default Posts
+export default Posts;
