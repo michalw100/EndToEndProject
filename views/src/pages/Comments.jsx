@@ -11,6 +11,7 @@ const Comments = () => {
   const { state } = useLocation();
   const { postID } = state || {};
   console.log(postID)
+
   // let { postID } = useParams();
   // postID = parseInt(postID, 10);
   let returnMassege;
@@ -75,14 +76,16 @@ const Comments = () => {
           <button className='btn' onClick={addCommentClicked}>Add</button>
           <button className='btn' onClick={cancleAddComment}>Cancel</button>
         </div>
-      ) : (
+      ) : ( 
+      // <>{postID === comment.postID &&
         <button className='btn' onClick={() => setAddComment((prev) => !prev)}>➕ Add Comment</button>
+        // }</>
       )}
 
       <div>
         {comments.map(
           (comment) => (
-            <Comment key={comment.commentID} comment={comment} setComments={setComments} comments={comments}/>
+            <Comment key={comment.commentID} comment={comment} setComments={setComments} comments={comments} postID={postID}/>
           ))}
       </div>
     </>

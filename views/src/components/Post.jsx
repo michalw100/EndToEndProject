@@ -11,7 +11,6 @@ const Post = ({ post, setPosts, posts, postInfo, setPostInfo }) => {
   const [formPost, setFormPost] = useState(false);
   const [editState, setEditState] = useState(false);
   const [viewComments, setViewComment] = useState(false);
-  const [commentInfo, setCommentInfo] = useState(-1);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,7 +70,7 @@ const Post = ({ post, setPosts, posts, postInfo, setPostInfo }) => {
           // setCommentInfo(post.postID);
           if(postInfo == post.postID)
           {
-              setPostInfo(-1);
+              // setPostInfo(-1);
               navigate(`/home/users/${user.userID}/posts`);
           }
           else
@@ -105,7 +104,7 @@ const Post = ({ post, setPosts, posts, postInfo, setPostInfo }) => {
             setViewComment((prev) => !prev)
         }}>view comments</button>
       </div>}
-      {viewComments && <Outlet />}
+      {viewComments && <Outlet/>}
     </>
   );
 };
