@@ -10,6 +10,7 @@ const Comments = () => {
   const [newComment, setNewComment] = useState({ commentName: '', body: '' });
   const { state } = useLocation();
   const { postID } = state || {};
+  console.log(postID)
   // let { postID } = useParams();
   // postID = parseInt(postID, 10);
   let returnMassege;
@@ -29,6 +30,7 @@ const Comments = () => {
     returnMassege = <h1>No comments found.</h1>
 
   const addCommentClicked = () => {
+    console.log(postID)
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -80,7 +82,7 @@ const Comments = () => {
       <div>
         {comments.map(
           (comment) => (
-            <Comment key={comment.commentID} comment={comment} setComments={setComments} comments={comments} />
+            <Comment key={comment.commentID} comment={comment} setComments={setComments} comments={comments}/>
           ))}
       </div>
     </>

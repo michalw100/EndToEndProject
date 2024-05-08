@@ -45,7 +45,7 @@ const Todos = () => {
 
     if (searchBy != null) {
       filteredTodos = todos.filter(todo =>
-        (searchBy == "completed" && todo.completed === searchCheckbox) ||
+        (searchBy == "completed" && todo.completed == searchCheckbox) ||
         (searchBy != "completed" &&
           todo.title.toLowerCase().includes(searchBy.toLowerCase()) ||
           todo.todoID.toString().includes(searchBy))
@@ -145,7 +145,7 @@ const Todos = () => {
       <div id='allTodos'>
         {sortedAndFilteredTodos().map((todo) => (
           todo.userID === user.userID && (
-            <Todo key={todo.id} todo={todo} setTodos={setTodos} todos={todos} />
+            <Todo key={todo.todoID} todo={todo} setTodos={setTodos} todos={todos} />
           )
         ))}
 

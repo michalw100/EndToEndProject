@@ -3,7 +3,7 @@ import React, { useState, useContext } from 'react';
 import { UserContext } from "../App.jsx"
 import "../css/Posts.css"
 
-const Post = ({ post, setPosts, posts }) => {
+const Post = ({ post, setPosts, posts, postInfo, setPostInfo }) => {
 
   const user = useContext(UserContext);
   const navigate = useNavigate();
@@ -11,6 +11,7 @@ const Post = ({ post, setPosts, posts }) => {
   const [formPost, setFormPost] = useState(false);
   const [editState, setEditState] = useState(false);
   const [viewComments, setViewComment] = useState(false);
+  const [commentInfo, setCommentInfo] = useState(-1);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,14 +64,24 @@ const Post = ({ post, setPosts, posts }) => {
   return (
     <>
       <div className='post'>
-        <p onDoubleClick={() => {
+        <p onDoubleClick={() => { 
+          setViewComment(false)
           setFormPost((prev) => !prev),
-            setEditState(false);
-          navigate(`/home/users/${user.userID}/posts/${post.postID}`);
-        }}>{post.id}. {post.title}</p>
-
+          setEditState(false);
+          // setCommentInfo(post.postID);
+          if(postInfo == post.postID)
+          {
+              setPostInfo(-1);
+              navigate(`/home/users/${user.userID}/posts`);
+          }
+          else
+          {
+            setPostInfo(post.postID);
+            navigate(`/home/users/${user.userID}/posts/${post.postID}`);
+          }
+        }}>{post.postID}. {post.title}</p>
       </div>
-      {formPost && <div className='postDetails'>
+      {formPost && postInfo == post.postID && <div className='postDetails'>
         <input className='postInput'
           name="title"
           disabled={!editState}
@@ -85,12 +96,12 @@ const Post = ({ post, setPosts, posts }) => {
           cols={50}
         />
         <hr />
-        {(user.id == post.userId) && !editState && <button className="btn" onClick={() => setEditState(true)}>Edit</button>}
+        {(user.userID == post.userID) && !editState && postInfo == post.postID && <button className="btn" onClick={() => setEditState(true)}>Edit</button>}
         {editState && <><button className="btn" onClick={handleSubmit}>Save Post</button>
           <button className="btn" onClick={resetEdit}>Reset edits</button></>}
-        {(user.id == post.userId) && <button className="btn" onClick={deletePostClicked}>Delete</button>}
+        {(user.userID == post.userID) && <button className="btn" onClick={deletePostClicked}>Delete</button>}
         <button className="btn" onClick={() => {
-          navigate(`/home/users/${user.id}/posts/${post.id}/comments`, { state: post }),
+          navigate(`/home/users/${user.userID}/posts/${post.postID}/comments`, { state: post }),
             setViewComment((prev) => !prev)
         }}>view comments</button>
       </div>}

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../App.jsx"
 import "../css/Comment.css"
 
-const Comment = ({ comment, setComments, comments }) => {
+const Comment = ({ comment, setComments, comments, commentInfo }) => {
 
   const user = useContext(UserContext);
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const Comment = ({ comment, setComments, comments }) => {
       .catch((error) => {
         console.error('There was an error!', error);
       });
-    navigate(`/home/users/${user.id}/posts/${comment.postID}/comments`);
+    navigate(`/home/users/${user.userID}/posts/${comment.postID}/comments`);
   }
 
   const editClicked = () => {
@@ -64,12 +64,13 @@ const Comment = ({ comment, setComments, comments }) => {
   }
 
   return (
+  //  <> {commentInfo == comment.postID && 
     <div className='comment'>
       <p>{comment.commentID}. {comment.email}</p>
       <label>
         Comment title:
         <input className='commentInput'
-          name="name"
+          name="commentName"
           disabled={!editState}
           value={editComment.commentName}
           onChange={handleChange} />
@@ -85,7 +86,7 @@ const Comment = ({ comment, setComments, comments }) => {
         />
       </label>
       <hr />
-
+      
       {(user.email === comment.email) &&
         <>{(!editState) && <button className="btn" onClick={editClicked}>Edit</button>}
           <button className="btn" onClick={deleteClicked}>Delete</button></>}
@@ -93,6 +94,7 @@ const Comment = ({ comment, setComments, comments }) => {
       {editState && <><button className="btn" onClick={handleSubmit}>Save comment</button>
         <button className="btn" onClick={resetEdit}>Reset edits</button></>}
     </div>
+    // }</>
   )
 }
 

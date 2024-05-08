@@ -1,8 +1,16 @@
 const model = require('../models/commentsModel');
 
-async function create(postID,body,email,commentName) {
+async function create(postID, body, email, commentName) {
     try {
         return model.createComment(postID,body,email,commentName);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getByPostID(postID) {
+    try {
+        return model.getCommentsByPostID(postID);
     } catch (err) {
         throw err;
     }
@@ -31,12 +39,12 @@ async function deleteById(id){
     }
 }
 
-async function update(id,postID,body,email,commentName) {
+async function update(id, postID, body, email, commentName) {
     try {
-        return model.updateComment(id,postID,body,email,commentName);
+        return model.updateComment(id, postID, body, email, commentName);
     } catch (err) {
         throw err;
     }
 }
 
-module.exports = { create, getAll, getById,deleteById,update }
+module.exports = { create, getAll, getById, deleteById, update, getByPostID }

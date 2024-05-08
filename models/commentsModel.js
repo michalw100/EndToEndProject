@@ -10,6 +10,19 @@ async function getComments() {
     }
 }
 
+
+async function getCommentsByPostID(postID) {
+    try {
+        const sql = 'SELECT * FROM comments WHERE postID=?';
+        const [rows, fields] = await pool.query(sql, [postID]);
+        console.log(rows);
+        return rows;
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
 async function getComment(id) {
     try {
         const sql = 'SELECT * FROM comments where commentID=?';
@@ -63,4 +76,4 @@ async function updateComment(id,postID,body,email,commentName) {
     }
 }
 
-module.exports = { updateComment, getComment, getComments, deleteComment, createComment,deleteCommentsByPostId }
+module.exports = { updateComment, getComment, getComments, deleteComment, createComment, deleteCommentsByPostId, getCommentsByPostID }

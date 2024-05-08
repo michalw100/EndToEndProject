@@ -12,6 +12,7 @@ const Posts = () => {
   const [newPost, setNewPost] = useState({ title: '', body: '' });
   const [allPostsLoaded, setAllPostsLoaded] = useState(false)
   const [showAllPosts, setShowAllPosts] = useState(false);
+  const [postInfo, setPostInfo] = useState(-1);
   let returnMassege = "";
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const Posts = () => {
         .then(data => {
           setAllPosts(data);
         })
-    }
+      }
   }, [allPostsLoaded]);
 
   if ((!showAllPosts && !userPosts) || (showAllPosts && !allPosts)) 
@@ -64,7 +65,9 @@ const Posts = () => {
     fetch('http://localhost:3000/posts', requestOptions)
       .then(response => response.json())
       .then(data => {
-        showAllPosts ? setAllPosts([...allPosts, data]) : setUserPosts([...userPosts, data]) ;
+        setUserPosts([...userPosts, data])
+        console.log(allPosts);
+        setAllPosts([...allPosts, data])   ;
         setAddPost(false);
         setNewPost({ title: '', body: '' });
       })
@@ -123,7 +126,9 @@ const Posts = () => {
             <Post key={post.postID}
               post={post}
               setPosts={showAllPosts ? setAllPosts : setUserPosts}
-              posts={showAllPosts ? allPosts : userPosts} />
+              posts={showAllPosts ? allPosts : userPosts}
+              postInfo = {postInfo}
+              setPostInfo={setPostInfo} />
           ))}
         </div>
       </div>
