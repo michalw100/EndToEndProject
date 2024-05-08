@@ -65,10 +65,13 @@ const Posts = () => {
     fetch('http://localhost:3000/posts', requestOptions)
       .then(response => response.json())
       .then(data => {
+        setAddPost(false);
         setUserPosts([...userPosts, data])
         console.log(allPosts);
-        setAllPosts([...allPosts, data])   ;
-        setAddPost(false);
+        if(allPosts!=null){
+
+          setAllPosts([...allPosts, data])   ;
+        }
         setNewPost({ title: '', body: '' });
       })
       .catch(error => console.error('There was an error!', error));
