@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { create, getById, update, getByPasswordAndUserName, getByUserName } = require('../controllers/usersController')
+const {  getById, update } = require('../controllers/usersController')
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
@@ -21,25 +21,6 @@ router.use(express.urlencoded({ extended: true }));
 //     }
 // });
 
-router.get("/", async (req, res) => {
-    let user = {};
-    const userName = req.query.username;
-    const password = req.query.password;
-    if (userName)
-        if (password) {
-            user = await getByPasswordAndUserName(password, userName);
-            if(user)
-                {
-                    delete user.addressID;
-                    delete user.passwordID;
-                }
-        }
-
-        else {
-            user = await getByUserName(userName);
-        }
-    res.send(user);
-});
 
 router.get("/:id", async (req, res) => {
     const id = req.params.id;
@@ -56,15 +37,15 @@ router.get("/:id", async (req, res) => {
 //     res.send(password)
 // });
 
-router.post("/", async (req, res) => {
-    try {
-        const response = await create(req.body.userName, req.body.name, req.body.email, req.body.phone, req.body.street, req.body.city, req.body.zipcode, req.body.company, req.body.password);
-        res.send(await getById(response.insertId));
-    } catch (err) {
-        console.log("error")
-        //res.sendFile(path.join(__dirname, '../public', 'error.html'));
-    }
-});
+// router.post("/", async (req, res) => {
+//     try {
+//         const response = await create(req.body.userName, req.body.name, req.body.email, req.body.phone, req.body.street, req.body.city, req.body.zipcode, req.body.company, req.body.password);
+//         res.send(await getById(response.insertId));
+//     } catch (err) {
+//         console.log("error")
+//         //res.sendFile(path.join(__dirname, '../public', 'error.html'));
+//     }
+// });
 
 router.put("/:id", async (req, res) => {
     const id = req.params.id;

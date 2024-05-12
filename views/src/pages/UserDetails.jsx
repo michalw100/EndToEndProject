@@ -23,11 +23,11 @@ const UserDetails = ({ setUser }) => {
         return;
     }
     const requestOptions = {
-      method: 'POST',
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user)
     };
-    fetch(`http://localhost:3000/users`, requestOptions)
+    fetch(`http://localhost:3000/users/${user.userID}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         setUser(data);

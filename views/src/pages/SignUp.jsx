@@ -22,7 +22,7 @@ function SignUp({ setUser }) {
         if (!CheckPassword(password))
             return;
 
-        fetch(`http://localhost:3000/users?username=${userName}`)
+        fetch(`http://localhost:3000/logIn?username=${userName}`, {method: 'POST'})
             .then(Response => Response.json())
             .then(user => {
                 userFromDB = user[0];
@@ -30,12 +30,19 @@ function SignUp({ setUser }) {
                     setSignUpError('User exists, please logIn');
                 }
                 else {
+                    fetch(`http://localhost:3000/logIn`, {method: 'POST',headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({userName:userName,password:password})})
+                    .then(Response => Response.json())
+                    .then(user => 
+                   {
+                    console.log(user) 
                     setUser((prevUser) => ({
                         ...prevUser,
                         "userName": userName,
-                        "password": password
+                        "password": password,
+                        "userID":user.userID
                     }));
-                    navigate(`/user-details?userName=${userName}`);
+                    navigate(`/user-details?userName=${userName}`);})
                 }
             });
 

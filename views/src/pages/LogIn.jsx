@@ -12,7 +12,7 @@ function LogIn({ setUser }) {
     let user;
 
     const handleLogin=()=> {
-        fetch(`http://localhost:3000/users?username=${userName}&&password=${password}`)
+        fetch(`http://localhost:3000/logIn?username=${userName}&&password=${password}`, {method: 'POST'})
             .then(response => response.json())
             .then(data => {
                 user = data;

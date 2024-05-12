@@ -30,12 +30,12 @@ CREATE TABLE addresses (
 CREATE TABLE users (
   userID int(9) AUTO_INCREMENT,
   userName varchar(50) NOT NULL,
-  name varchar(50) NOT NULL,
-  email varchar(30) NOT NULL,
-  phone varchar(100) NOT NULL,
-  addressID int NOT NULL,
+  name varchar(50) ,
+  email varchar(30) ,
+  phone varchar(100),
+  addressID int ,
   passwordID int NOT NULL,
-  company varchar(50) NOT NULL,
+  company varchar(50) ,
   PRIMARY KEY (userID),
   FOREIGN KEY (addressID) REFERENCES addresses (addressID),
   FOREIGN KEY (passwordID) REFERENCES passwords (passwordID)

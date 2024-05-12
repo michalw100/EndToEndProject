@@ -1,4 +1,5 @@
 const model = require('../models/usersModel');
+const bcrypt = require('bcrypt');
 
 async function create(userName, name, email, phone, street, city, zipcode, company, password) {
     try {
@@ -16,9 +17,17 @@ async function create(userName, name, email, phone, street, city, zipcode, compa
 //     }
 // }
 
-async function getByPasswordAndUserName(password,userName) {
+async function getByPasswordAndUserName(password, userName) {
     try {
-        return model.getUserByPasswordAndUserName(password,userName);
+        const result = await model.getUserByPasswordAndUserName(userName);
+        if(result[0].password){
+            if (bcrypt.compareSync(password, result[0].password)) {
+                return result[0];
+            }
+        }
+       
+        return {};
+
     } catch (err) {
         throw err;
     }
@@ -39,7 +48,7 @@ async function getByUserName(username) {
         throw err;
     }
 }
-async function deleteById(id){
+async function deleteById(id) {
     try {
         return model.deleteUser(id);
     } catch (err) {
@@ -55,4 +64,4 @@ async function update(id, userName, name, email, phone, street, city, zipcode, c
     }
 }
 
-module.exports = { create,  getById, deleteById, update,getByPasswordAndUserName,getByUserName }
+module.exports = { create, getById, deleteById, update, getByPasswordAndUserName, getByUserName }

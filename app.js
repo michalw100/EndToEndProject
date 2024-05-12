@@ -48,7 +48,8 @@ const usersRouter = require("./routes/usersRoutes")
 app.use("/users",usersRouter);
 const commentsRouter = require("./routes/commentsRoutes")
 app.use("/comments",commentsRouter);
-
+const logInRouter = require("./routes/logInRoutes")
+app.use("/logIn",logInRouter);
 app.listen(port, () => {
   console.log(`app listening on port ${port}`);
 });
