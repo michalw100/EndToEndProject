@@ -19,7 +19,7 @@ router.use(express.urlencoded({ extended: true }));
 //         console.error("Error when getting users and addresses:", error);
 //         res.status(404).send("Error when getting users and addresses");
 //     }
-// });
+// })
 
 
 router.get("/:id", async (req, res) => {
