@@ -29,7 +29,7 @@ CREATE TABLE addresses (
 
 CREATE TABLE users (
   userID int(9) AUTO_INCREMENT,
-  userName varchar(50) NOT NULL,
+  userName varchar(50) UNIQUE NOT NULL,
   name varchar(50) ,
   email varchar(30) ,
   phone varchar(100),

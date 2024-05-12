@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {  getById, update } = require('../controllers/usersController')
+const {  getById, update,create } = require('../controllers/usersController')
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
@@ -37,15 +37,17 @@ router.get("/:id", async (req, res) => {
 //     res.send(password)
 // });
 
-// router.post("/", async (req, res) => {
-//     try {
-//         const response = await create(req.body.userName, req.body.name, req.body.email, req.body.phone, req.body.street, req.body.city, req.body.zipcode, req.body.company, req.body.password);
-//         res.send(await getById(response.insertId));
-//     } catch (err) {
-//         console.log("error")
-//         //res.sendFile(path.join(__dirname, '../public', 'error.html'));
-//     }
-// });
+router.post("/", async (req, res) => {
+    try {
+        const response = await create(req.body.userName, null, null, null, null, null, null,null, req.body.password);
+        console.log(response);
+           user ={userID:response.insertId};
+           res.send(user)
+    } catch (err) {
+        console.log("error")
+        //res.sendFile(path.join(__dirname, '../public', 'error.html'));
+    }
+});
 
 router.put("/:id", async (req, res) => {
     const id = req.params.id;

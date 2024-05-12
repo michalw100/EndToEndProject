@@ -20,13 +20,7 @@ router.post("/", async (req, res) => {
             user = await getByUserName(userName);
         }
     else {
-        try {
-            const response = await create(req.body.userName, null, null, null, null, null, null,null, req.body.password);
-            user ={userID:response.insertId};
-        } catch (err) {
-            console.log("error")
-            //res.sendFile(path.join(__dirname, '../public', 'error.html'));
-        }
+       
     }
     res.send(user);
 });

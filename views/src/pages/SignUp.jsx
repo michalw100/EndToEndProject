@@ -26,11 +26,12 @@ function SignUp({ setUser }) {
             .then(Response => Response.json())
             .then(user => {
                 userFromDB = user[0];
+                console.log(user);
                 if (userFromDB != null && userFromDB.userID) {
                     setSignUpError('User exists, please logIn');
                 }
                 else {
-                    fetch(`http://localhost:3000/logIn`, {method: 'POST',headers: { 'Content-Type': 'application/json' },
+                    fetch(`http://localhost:3000/users`, {method: 'POST',headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({userName:userName,password:password})})
                     .then(Response => Response.json())
                     .then(user => 
@@ -42,7 +43,7 @@ function SignUp({ setUser }) {
                         "password": password,
                         "userID":user.userID
                     }));
-                    navigate(`/user-details?userName=${userName}`);})
+                    navigate(`/user-details`);})
                 }
             });
 

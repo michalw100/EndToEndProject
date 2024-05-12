@@ -56,7 +56,7 @@ async function getUserByPasswordAndUserName( userName) {
     }
 }
 
-async function createUser(userName, name, email, phone, street, city, zipcode, company, password) {
+async function createUser(userName, name, email, phone, street, city, zipcode, company, hashedPassword) {
     try {
         const newAddress = null;
         if (street !== null) {
@@ -64,7 +64,6 @@ async function createUser(userName, name, email, phone, street, city, zipcode, c
             newAddress = await pool.query(sqlAqddress, [street, city, zipcode])[0].insertId;
         }
         const sqlPassword = "INSERT INTO passwords (password) VALUES(?)";
-        const hashedPassword = await bcrypt.hash(password, 10);
         const newPassword = await pool.query(sqlPassword, [hashedPassword]);
         const sql = "INSERT INTO users (`userName`, `name`,`email`, `phone`, `addressID`, `company`, `passwordID`) VALUES(?, ?, ?, ?, ?, ?, ?)";
         const newUser = await pool.query(sql, [userName, name, email, phone, newAddress, company, newPassword[0].insertId]);

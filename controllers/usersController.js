@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt');
 
 async function create(userName, name, email, phone, street, city, zipcode, company, password) {
     try {
-        return model.createUser(userName, name, email, phone, street, city, zipcode, company, password);
+        const hashedPassword = await bcrypt.hash(password, 10);
+        return model.createUser(userName, name, email, phone, street, city, zipcode, company, hashedPassword);
     } catch (err) {
         throw err;
     }
@@ -20,7 +21,8 @@ async function create(userName, name, email, phone, street, city, zipcode, compa
 async function getByPasswordAndUserName(password, userName) {
     try {
         const result = await model.getUserByPasswordAndUserName(userName);
-        if(result[0].password){
+        
+        if(result[0]){
             if (bcrypt.compareSync(password, result[0].password)) {
                 return result[0];
             }
