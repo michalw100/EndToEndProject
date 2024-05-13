@@ -20,16 +20,17 @@ async function getUser(id) {
         console.log(err);
     }
 }
-async function getUserByUserName(userName) {
-    try {
-        const sql = 'SELECT * FROM users where userName=?';
-        const result = await pool.query(sql, [userName]);
-        console.log(result);
-        return result[0];
-    } catch (err) {
-        throw err;
-    }
-}
+
+// async function getUserByUserName(userName) {
+//     try {
+//         const sql = 'SELECT * FROM users where userName=?';
+//         const result = await pool.query(sql, [userName]);
+//         console.log(result);
+//         return result[0];
+//     } catch (err) {
+//         throw err;
+//     }
+// }
 
 // async function getUserByPasswordAndUserName(password,userName) {
 //     try {
@@ -58,10 +59,6 @@ async function getUserByPasswordAndUserName( userName) {
 
 async function createUser(userName, hashedPassword) {
     try {
-        // console.log(await getUserByUserName(userName))
-        const user = await getUserByUserName(userName);
-        if(user.length > 0)
-            throw new Error('UserName already exist');
         const sqlPassword = "INSERT INTO passwords (password) VALUES(?)";
         const newPassword = await pool.query(sqlPassword, [hashedPassword]);
         const sql = "INSERT INTO users (`userName`, `name`,`email`, `phone`, `addressID`, `company`, `passwordID`) VALUES(?, ?, ?, ?, ?, ?, ?)";
@@ -70,6 +67,8 @@ async function createUser(userName, hashedPassword) {
         return newUser[0];
         
     } catch (err) {
+        if(err.sqlMessage == `Duplicate entry '${userName}' for key 'users.userName'`)
+            throw new Error('UserName already exist');
        throw err;
     }
 }
@@ -116,4 +115,4 @@ let resultAddress;
     }
 }
 
-module.exports = { updateUser, getUser, createUser, getUserByPasswordAndUserName, getUserByUserName }
+module.exports = { updateUser, getUser, createUser, getUserByPasswordAndUserName }

@@ -8,7 +8,7 @@ async function getTodos() {
       return rows;
 
     } catch (err) {
-      console.log(err);
+        throw err;
     }
 }
 
@@ -19,7 +19,7 @@ async function getTodosByUserID(userID) {
       console.log(rows);
       return rows;
   } catch (err) {
-      console.log(err);
+        throw err;
   }
 
 }
@@ -31,7 +31,7 @@ async function getTodosByUserID(userID) {
       return result[0][0];
 
     } catch (err) {
-      console.log(err);
+        throw err;
     }
 }
 
@@ -42,7 +42,7 @@ async function createTodo(title, completed, userID) {
       return result[0];
 
     } catch (err) {
-      console.log(err);
+        throw err;
     }
 }
 
@@ -51,7 +51,6 @@ async function deleteTodo(id) {
       const sql = `DELETE FROM todos WHERE todoID = ?`;
       const result = await pool.query(sql, [id]);
     } catch (err) {
-      console.error('Error deleting todo:', err);
       throw err;
     }
   }
