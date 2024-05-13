@@ -2,7 +2,7 @@ const model = require('../models/todosModel');
 
 async function create(title, completed, userID) {
     try {
-        return model.createTodo(title, completed, userID);
+        return await model.createTodo(title, completed, userID);
     } catch (err) {
         throw err;
     }
@@ -11,7 +11,7 @@ async function create(title, completed, userID) {
 
 async function getByUserID(userID) {
     try {
-        return model.getTodosByUserID(userID);
+        return await model.getTodosByUserID(userID);
     } catch (err) {
         throw err;
     }
@@ -19,7 +19,7 @@ async function getByUserID(userID) {
 
 async function getAll() {
     try {
-        return model.getTodos();
+        return await model.getTodos();
     } catch (err) {
         throw err;
     }
@@ -27,14 +27,14 @@ async function getAll() {
 
 async function getById(id) {
     try {
-        return model.getTodo(id);
+        return await model.getTodo(id);
     } catch (err) {
         throw err;
     }
 }
 async function deleteById(id){
     try {
-        return model.deleteTodo(id);
+        return await model.deleteTodo(id);
     } catch (err) {
         throw err;
     }
@@ -42,7 +42,7 @@ async function deleteById(id){
 
 async function update(id, title, completed, userID) {
     try {
-        return model.updateTodo(id, title, completed, userID);
+        return await model.updateTodo(id, title, completed, userID);
     } catch (err) {
         throw err;
     }

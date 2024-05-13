@@ -12,14 +12,6 @@ async function create(userName, password) {
     }
 }
 
-// async function getAll() {
-//     try {
-//         return model.getUsers();
-//     } catch (err) {
-//         throw err;
-//     }
-// }
-
 async function getByPasswordAndUserName(password, userName) {
     try {
         const result = await model.getUserByPasswordAndUserName(userName);

@@ -25,14 +25,14 @@ async function getByUserID(userID) {
 
 async function getById(id) {
     try {
-        return model.getPost(id);
+        return await model.getPost(id);
     } catch (err) {
         throw err;
     }
 }
 async function deleteById(id){
     try {
-        return model.deletePost(id);
+        return await model.deletePost(id);
     } catch (err) {
         throw err;
     }
@@ -40,7 +40,7 @@ async function deleteById(id){
 
 async function update(id,title, body, userID) {
     try {
-        return model.updatePost(id,title, body, userID);
+        return await model.updatePost(id,title, body, userID);
     } catch (err) {
         throw err;
     }
