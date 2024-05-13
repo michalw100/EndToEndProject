@@ -20,7 +20,7 @@ function LogIn({ setUser }) {
             .then(response => {
                 return response.json().then(data => {
                     if (response.status !== 200) {
-                        setLoginError(data.massege);
+                        setLoginError(data.message);
                         return;
                     }
                     user = data;

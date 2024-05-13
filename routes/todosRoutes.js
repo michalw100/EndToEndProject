@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
         res.status(200).send(await getByUserID(userID));    
     }
     catch (err) {
-        res.status(500).send({ massege: err.message });
+        res.status(500).send({ message: err.message });
     }
 })
 
@@ -21,7 +21,7 @@ router.get("/:id", async (req, res) => {
         res.status(200).send(todo);
     }
     catch (err) {
-        res.status(500).send({ massege: err.message });
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
         res.status(200).send(await getById(response.insertId));
     }
     catch (err) {
-        res.status(500).send({ massege: err.message });
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -43,7 +43,7 @@ router.put("/:id", async (req, res) => {
     }
     catch(err)
     {
-        res.status(500).send({massege: err.message});
+        res.status(500).send({message: err.message});
     }
 });
 
@@ -55,7 +55,7 @@ router.delete("/:id", async (req, res) => {
     }
     catch(err)
     {
-        res.status(500).send({massege: err.message});
+        res.status(500).send({message: err.message});
     }
 });
 

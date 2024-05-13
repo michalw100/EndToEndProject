@@ -13,29 +13,10 @@ router.post("/", async (req, res) => {
    catch(err)
    {
      if(err.message == "UserName already exist")
-          res.status(400).send({massege: "UserName already exist"});
+          res.status(400).send({message: "UserName already exist"});
      else
-          res.status(500).send({massege: "Fail to fetch: " + err.message});
+          res.status(500).send({message: "Fail to fetch: " + err.message});
    }
 });
 
 module.exports = router;
-// let user = {};
-// const userName = req.query.username;
-// const password = req.query.password;
-// if (userName)
-//     if (password) {
-//         user = await getByPasswordAndUserName(password, userName);
-//         if (user) {
-//             delete user.addressID;
-//             delete user.passwordID;
-//         }
-//     }
-
-//     else {
-//         user = await getByUserName(userName);
-//     }
-// else {
-   
-// }
-// res.send(user);

@@ -29,7 +29,7 @@ function SignUp({ setUser }) {
         .then(response => {
             return response.json().then(data => {
                 if (response.status !== 201) {
-                    setSignUpError(data.massege);
+                    setSignUpError(data.message);
                     return;
                 }
                 // אם התנאי לא מתקיים, תמשיך לכתוב קוד כאן

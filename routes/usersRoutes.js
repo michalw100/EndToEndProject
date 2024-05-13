@@ -11,7 +11,7 @@ router.put("/:id", async (req, res) => {
         res.status(200).send(await getById(id));
     }
     catch (err) {
-        res.status(500).send({ massege: err.message });
+        res.status(500).send({ message: err.message });
     }
 });
 

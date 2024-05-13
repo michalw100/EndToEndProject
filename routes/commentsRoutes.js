@@ -24,7 +24,7 @@ router.get("/:id", async (req, res) => {
         res.status(200).send(post)
     }
     catch (err) {
-        res.status(500).send({ massege: err.message });
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
         const response = await controller.create(req.body.postID, req.body.body, req.body.email, req.body.commentName)
         res.status(200).send(await controller.getById(response.insertId));
     } catch (err) {
-        res.status(500).send({ massege: err.message });
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -45,7 +45,7 @@ router.put("/:id", async (req, res) => {
         res.status(200).send(await controller.getById(id));
     }
     catch (err) {
-        res.status(500).send({ massege: err.message });
+        res.status(500).send({ message: err.message });
     }
 });
 
@@ -56,7 +56,7 @@ router.delete("/:id", async (req, res) => {
         res.status(200).send();
     }
     catch (err) {
-        res.status(500).send({ massege: err.message });
+        res.status(500).send({ message: err.message });
     }
 });
 module.exports = router

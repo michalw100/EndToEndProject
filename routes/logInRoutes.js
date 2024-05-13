@@ -12,9 +12,9 @@ router.post("/", async (req, res) => {
     }
     catch (err) {
         if (err.message == "User does not exist, please sign up")
-            res.status(400).send({ massege: "User does not exist, please sign up" });
+            res.status(400).send({ message: "User does not exist, please sign up" });
         else
-            res.status(500).send({ massege: "Fail to fetch: " + err.message });
+            res.status(500).send({ message: "Fail to fetch: " + err.message });
     }
 });
 
