@@ -4,18 +4,18 @@ const controller = require('../controllers/commentsController')
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-// router.get("/", async(req, res) => {
-//   try { const postID = req.query.postID;
-//     if(postID)
-//     {
-//         res.send(await controller.getByPostID(postID));
-//     }
-//     else
-//         res.send(await controller.getAll());}
-//     catch{
-//         res.status()
-//     }
-// })
+router.get("/", async(req, res) => {
+  try { const postID = req.query.postID;
+    if(postID)
+    {
+        res.send(await controller.getByPostID(postID));
+    }
+    else
+        res.send(await controller.getAll());}
+    catch{
+        res.status()
+    }
+})
 
 router.get("/:id", async (req, res) => {
     try {
