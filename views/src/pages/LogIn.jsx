@@ -11,22 +11,25 @@ function LogIn({ setUser }) {
     const [password, setPassword] = useState('');
     let user;
 
-    const handleLogin=()=> {
-        fetch(`http://localhost:3000/logIn?username=${userName}&&password=${password}`, {method: 'POST'})
-            .then(response => response.json())
-            .then(data => {
-                user = data;
-                if (user && user.userID != null) {
+    const handleLogin = () => {
+        if (!userName || !password) {
+            setLoginError('Please fill in all fields.');
+            return;
+        }
+        fetch(`http://localhost:3000/logIn?username=${userName}&&password=${password}`, { method: 'POST' })
+            .then(response => {
+                return response.json().then(data => {
+                    if (response.status !== 200) {
+                        setLoginError(data.massege);
+                        return;
+                    }
+                    user = data;
                     setLoginError("");
                     localStorage.setItem("currentUser", user.userID);
                     localStorage.setItem(user.userID, JSON.stringify(user));
                     setUser(user);
                     navigate('/home');
-                }
-                else if (!userName || !password)
-                    setLoginError('Please fill in all fields.');
-                else
-                    setLoginError("Username or password is not correct")
+                })
             })
     }
 

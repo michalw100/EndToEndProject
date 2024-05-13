@@ -14,7 +14,6 @@ async function create(userName, password) {
 
 async function getByPasswordAndUserName(password, userName) {
     try {
-        console.log("gfg");
         result = await model.getUserByPasswordAndUserName(userName);
         if (result[0]) {
             if (bcrypt.compareSync(password, result[0].password)) {
