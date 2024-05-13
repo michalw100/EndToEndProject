@@ -15,13 +15,11 @@ async function create(userName, password) {
 async function getByPasswordAndUserName(password, userName) {
     try {
         const result = await model.getUserByPasswordAndUserName(userName);
-        
         if(result[0]){
             if (bcrypt.compareSync(password, result[0].password)) {
                 return result[0];
             }
         }
-       
         return {};
 
     } catch (err) {
@@ -37,20 +35,6 @@ async function getById(id) {
         throw err;
     }
 }
-async function getByUserName(username) {
-    try {
-        return await model.getUserByUserName(username);
-    } catch (err) {
-        throw err;
-    }
-}
-async function deleteById(id) {
-    try {
-        return await model.deleteUser(id);
-    } catch (err) {
-        throw err;
-    }
-}
 
 async function update(id, userName, name, email, phone, street, city, zipcode, company) {
     try {
@@ -60,7 +44,7 @@ async function update(id, userName, name, email, phone, street, city, zipcode, c
     }
 }
 
-module.exports = { create, getById, deleteById, update, getByPasswordAndUserName, getByUserName }
+module.exports = { create, getById, update, getByPasswordAndUserName }
 
 
 

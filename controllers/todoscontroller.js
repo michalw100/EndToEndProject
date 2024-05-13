@@ -6,20 +6,11 @@ async function create(title, completed, userID) {
     } catch (err) {
         throw err;
     }
-
 }
 
 async function getByUserID(userID) {
     try {
         return await model.getTodosByUserID(userID);
-    } catch (err) {
-        throw err;
-    }
-}
-
-async function getAll() {
-    try {
-        return await model.getTodos();
     } catch (err) {
         throw err;
     }
@@ -48,4 +39,4 @@ async function update(id, title, completed, userID) {
     }
 }
 
-module.exports = { create, getAll, getById, deleteById, update, getByUserID }
+module.exports = { create, getById, deleteById, update, getByUserID }
