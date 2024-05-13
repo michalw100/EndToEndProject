@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../App.jsx"
 import "../css/Comment.css"
 
-const Comment = ({ comment, setComments, comments, postID}) => {
+const Comment = ({ comment, setComments, comments}) => {
 
   const user = useContext(UserContext);
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ const Comment = ({ comment, setComments, comments, postID}) => {
   }
 
   return (
-   <> {postID == comment.postID && 
+  //  <> {postID == comment.postID && 
     <div className='comment'>
       <p>{comment.commentID}. {comment.email}</p>
       <label>
@@ -94,7 +94,7 @@ const Comment = ({ comment, setComments, comments, postID}) => {
       {editState && <><button className="btn" onClick={handleSubmit}>Save comment</button>
         <button className="btn" onClick={resetEdit}>Reset edits</button></>}
     </div>
-    }</>
+    // }</>
   )
 }
 

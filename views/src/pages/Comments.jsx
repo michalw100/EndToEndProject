@@ -10,10 +10,10 @@ const Comments = () => {
   const [newComment, setNewComment] = useState({ commentName: '', body: '' });
   const { state } = useLocation();
   const { postID } = state || {};
-  console.log(postID)
-
+  // console.log(postID)
   // let { postID } = useParams();
   // postID = parseInt(postID, 10);
+
   let returnMassege;
 
   useEffect(() => {
@@ -31,12 +31,11 @@ const Comments = () => {
     returnMassege = <h1>No comments found.</h1>
 
   const addCommentClicked = () => {
-    console.log(postID)
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...newComment, postID: postID, email: user.email })
-    };
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...newComment, postID: postID, email: user.email })
+  };
 
     fetch('http://localhost:3000/comments', requestOptions)
       .then(response => response.json())
@@ -85,7 +84,7 @@ const Comments = () => {
       <div>
         {comments.map(
           (comment) => (
-            <Comment key={comment.commentID} comment={comment} setComments={setComments} comments={comments} postID={postID}/>
+            <Comment key={comment.commentID} comment={comment} setComments={setComments} comments={comments}/>
           ))}
       </div>
     </>
