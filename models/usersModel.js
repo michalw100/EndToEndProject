@@ -1,5 +1,4 @@
 const pool = require('../DB.js');
-const bcrypt = require('bcrypt');
 
 // async function getUsers() {
 //     try {
@@ -59,15 +58,17 @@ async function getUserByPasswordAndUserName( userName) {
 
 async function createUser(userName, hashedPassword) {
     try {
-        if(await getUserByUserName(userName)!==[])
+        // console.log(await getUserByUserName(userName))
+        const user = await getUserByUserName(userName);
+        if(user.length > 0)
             throw new Error('UserName already exist');
         const sqlPassword = "INSERT INTO passwords (password) VALUES(?)";
         const newPassword = await pool.query(sqlPassword, [hashedPassword]);
         const sql = "INSERT INTO users (`userName`, `name`,`email`, `phone`, `addressID`, `company`, `passwordID`) VALUES(?, ?, ?, ?, ?, ?, ?)";
         const newUser = await pool.query(sql, [userName, null, null, null, null, null, newPassword[0].insertId]);
         console.log(newUser[0])
-
         return newUser[0];
+        
     } catch (err) {
        throw err;
     }

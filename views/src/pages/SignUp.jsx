@@ -8,7 +8,6 @@ function SignUp({ setUser }) {
     const [password, setPassword] = useState('');
     const [passwordVerify, setPasswordVerify] = useState('');
     const [signUpError, setSignUpError] = useState('');
-    let userFromDB;
 
     const handleRegistration = () => {
         if (!userName || !password || !passwordVerify) {
@@ -22,39 +21,30 @@ function SignUp({ setUser }) {
         if (!CheckPassword(password))
             return;
 
-        // fetch(`http://localhost:3000/logIn?username=${userName}`, {method: 'POST'})
-        //     .then(Response => Response.json())
-        //     .then(user => {
-        //         userFromDB = user[0];
-        //         console.log(user);
-        //         if (userFromDB != null && userFromDB.userID) {
-        //             setSignUpError('User exists, please logIn');
-        //         }
-        //         else {
-
         fetch(`http://localhost:3000/register`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userName: userName, password: password })
         })
-            .then(Response => Response.json())
-            .then(data => {
-                if (data.status != 201) {
+        .then(response => {
+            return response.json().then(data => {
+                if (response.status !== 201) {
                     setSignUpError(data.massege);
                     return;
                 }
-
-                //console.log(data)
-                setUser((prevUser) => ({
+                // אם התנאי לא מתקיים, תמשיך לכתוב קוד כאן
+                setUser(prevUser => ({
                     ...prevUser,
-                    "userName": userName,
-                    "password": password,
-                    "userID": data.userID
+                    userName: userName,
+                    password: password,
+                    userID: data.userID
                 }));
                 navigate(`/user-details`);
-            }).catch(err => {
-                setSignUpError(err);
             });
-
+        })
+        .catch(err => {
+            setSignUpError(err);
+        });
     }
 
     const CheckPassword = (password) => {

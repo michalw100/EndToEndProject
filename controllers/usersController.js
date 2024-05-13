@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 async function create(userName, password) {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const response = model.createUser(userName, hashedPassword);
+        const response = await model.createUser(userName, hashedPassword);
        return {userID:response.insertId};
 
     } catch (err) {
@@ -40,21 +40,21 @@ async function getByPasswordAndUserName(password, userName) {
 
 async function getById(id) {
     try {
-        return model.getUser(id);
+        return await model.getUser(id);
     } catch (err) {
         throw err;
     }
 }
 async function getByUserName(username) {
     try {
-        return model.getUserByUserName(username);
+        return await model.getUserByUserName(username);
     } catch (err) {
         throw err;
     }
 }
 async function deleteById(id) {
     try {
-        return model.deleteUser(id);
+        return await model.deleteUser(id);
     } catch (err) {
         throw err;
     }
@@ -62,7 +62,7 @@ async function deleteById(id) {
 
 async function update(id, userName, name, email, phone, street, city, zipcode, company) {
     try {
-        return model.updateUser(id, userName, name, email, phone, street, city, zipcode, company);
+        return await model.updateUser(id, userName, name, email, phone, street, city, zipcode, company);
     } catch (err) {
         throw err;
     }
