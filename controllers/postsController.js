@@ -2,15 +2,14 @@ const model = require('../models/postsModel');
 
 async function create(title, body, userID) {
     try {
-        return model.createPost(title, body, userID);
+        return await model.createPost(title, body, userID);
     } catch (err) {
         throw err;
     }
-
 }
 async function getAll() {
     try {
-        return model.getPosts();
+        return await model.getPosts();
     } catch (err) {
         throw err;
     }
@@ -18,7 +17,7 @@ async function getAll() {
 
 async function getByUserID(userID) {
     try {
-        return model.getPostsByUserID(userID);
+        return await model.getPostsByUserID(userID);
     } catch (err) {
         throw err;
     }

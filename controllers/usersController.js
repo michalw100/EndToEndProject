@@ -1,10 +1,12 @@
 const model = require('../models/usersModel');
 const bcrypt = require('bcrypt');
 
-async function create(userName, name, email, phone, street, city, zipcode, company, password) {
+async function create(userName, password) {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        return model.createUser(userName, name, email, phone, street, city, zipcode, company, hashedPassword);
+        const response = model.createUser(userName, hashedPassword);
+       return {userID:response.insertId};
+
     } catch (err) {
         throw err;
     }
@@ -31,7 +33,7 @@ async function getByPasswordAndUserName(password, userName) {
         return {};
 
     } catch (err) {
-        throw err;
+        throw new Error('User does not exist');
     }
 }
 
@@ -67,3 +69,12 @@ async function update(id, userName, name, email, phone, street, city, zipcode, c
 }
 
 module.exports = { create, getById, deleteById, update, getByPasswordAndUserName, getByUserName }
+
+
+
+
+
+// const ERROR_MESSAGES = {
+//     not_Exist: 'User does not ...',
+
+// }

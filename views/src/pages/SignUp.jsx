@@ -10,7 +10,7 @@ function SignUp({ setUser }) {
     const [signUpError, setSignUpError] = useState('');
     let userFromDB;
 
-    const handleRegistration=() =>{
+    const handleRegistration = () => {
         if (!userName || !password || !passwordVerify) {
             setSignUpError('Please fill in all fields.');
             return;
@@ -22,34 +22,42 @@ function SignUp({ setUser }) {
         if (!CheckPassword(password))
             return;
 
-        fetch(`http://localhost:3000/logIn?username=${userName}`, {method: 'POST'})
+        // fetch(`http://localhost:3000/logIn?username=${userName}`, {method: 'POST'})
+        //     .then(Response => Response.json())
+        //     .then(user => {
+        //         userFromDB = user[0];
+        //         console.log(user);
+        //         if (userFromDB != null && userFromDB.userID) {
+        //             setSignUpError('User exists, please logIn');
+        //         }
+        //         else {
+
+        fetch(`http://localhost:3000/register`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userName: userName, password: password })
+        })
             .then(Response => Response.json())
-            .then(user => {
-                userFromDB = user[0];
-                console.log(user);
-                if (userFromDB != null && userFromDB.userID) {
-                    setSignUpError('User exists, please logIn');
+            .then(data => {
+                if (data.status != 201) {
+                    setSignUpError(data.massege);
+                    return;
                 }
-                else {
-                    fetch(`http://localhost:3000/users`, {method: 'POST',headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({userName:userName,password:password})})
-                    .then(Response => Response.json())
-                    .then(user => 
-                   {
-                    console.log(user) 
-                    setUser((prevUser) => ({
-                        ...prevUser,
-                        "userName": userName,
-                        "password": password,
-                        "userID":user.userID
-                    }));
-                    navigate(`/user-details`);})
-                }
+
+                //console.log(data)
+                setUser((prevUser) => ({
+                    ...prevUser,
+                    "userName": userName,
+                    "password": password,
+                    "userID": data.userID
+                }));
+                navigate(`/user-details`);
+            }).catch(err => {
+                setSignUpError(err);
             });
 
     }
 
-    const CheckPassword=(password) =>{
+    const CheckPassword = (password) => {
         let psw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;
         if (password.match(psw)) {
             return true;

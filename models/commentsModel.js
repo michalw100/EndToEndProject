@@ -18,7 +18,7 @@ async function getCommentsByPostID(postID) {
         console.log(rows);
         return rows;
     } catch (err) {
-        console.log(err);
+        throw err;
     }
 
 }
@@ -35,10 +35,10 @@ async function getComment(id) {
     }
 }
 
-async function createComment(postID,body,email,commentName) {
+async function createComment(postID, body, email, commentName) {
     try {
         const sql = "INSERT INTO comments (`postID`,`body`,`email`,`commentName`) VALUES(?, ?,?,?)";
-        const result = await pool.query(sql, [postID,body,email,commentName]);
+        const result = await pool.query(sql, [postID, body, email, commentName]);
 
         return result[0];
 
@@ -65,10 +65,10 @@ async function deleteCommentsByPostId(postId) {
         throw err;
     }
 }
-async function updateComment(id,postID,body,email,commentName) {
+async function updateComment(id, postID, body, email, commentName) {
     try {
         const sql = `UPDATE comments SET postID = ?, body = ?,email = ?, commentName=? WHERE commentID = ?`;
-        const result = await pool.query(sql, [postID,body,email,commentName,id]);
+        const result = await pool.query(sql, [postID, body, email, commentName, id]);
         return result;
     } catch (err) {
         console.error('Error updating Comment:', err);
