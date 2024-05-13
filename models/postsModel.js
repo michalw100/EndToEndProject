@@ -5,7 +5,6 @@ async function getPosts() {
     try {
         const sql = 'SELECT * FROM posts';
         const [rows, fields] = await pool.query(sql);
-        console.log(rows);
         return rows;
     } catch (err) {
         throw err;
@@ -17,7 +16,6 @@ async function getPostsByUserID(userID) {
     try {
         const sql = 'SELECT * FROM posts WHERE userID=?';
         const [rows, fields] = await pool.query(sql, [userID]);
-        console.log(rows);
         return rows;
     } catch (err) {
         throw err;

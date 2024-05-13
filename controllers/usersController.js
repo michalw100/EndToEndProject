@@ -5,7 +5,7 @@ async function create(userName, password) {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const response = await model.createUser(userName, hashedPassword);
-       return {userID:response.insertId};
+        return { userID: response.insertId };
 
     } catch (err) {
         throw err;
@@ -14,16 +14,18 @@ async function create(userName, password) {
 
 async function getByPasswordAndUserName(password, userName) {
     try {
-        const result = await model.getUserByPasswordAndUserName(userName);
-        if(result[0]){
+        console.log("gfg");
+        result = await model.getUserByPasswordAndUserName(userName);
+        if (result[0]) {
             if (bcrypt.compareSync(password, result[0].password)) {
                 return result[0];
             }
         }
-        return {};
-
+        else {
+            throw new Error('User does not exist, please sign up');
+        }
     } catch (err) {
-        throw new Error('User does not exist');
+        throw err;
     }
 }
 
@@ -45,12 +47,3 @@ async function update(id, userName, name, email, phone, street, city, zipcode, c
 }
 
 module.exports = { create, getById, update, getByPasswordAndUserName }
-
-
-
-
-
-// const ERROR_MESSAGES = {
-//     not_Exist: 'User does not ...',
-
-// }

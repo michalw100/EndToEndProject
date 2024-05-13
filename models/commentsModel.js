@@ -1,21 +1,20 @@
 const pool = require('../DB.js');
 
-async function getComments() {
-    try {
-        const sql = 'SELECT * FROM comments';
-        const [rows, fields] = await pool.query(sql);
-        return rows;
-    } catch (err) {
-        console.log(err);
-    }
-}
+// async function getComments() {
+//     try {
+//         const sql = 'SELECT * FROM comments';
+//         const [rows, fields] = await pool.query(sql);
+//         return rows;
+//     } catch (err) {
+//         throw err;
+//         }
+// }
 
 
 async function getCommentsByPostID(postID) {
     try {
         const sql = 'SELECT * FROM comments WHERE postID=?';
         const [rows, fields] = await pool.query(sql, [postID]);
-        console.log(rows);
         return rows;
     } catch (err) {
         throw err;
@@ -31,7 +30,7 @@ async function getComment(id) {
 
         return result[0][0];
     } catch (err) {
-        console.log(err);
+        throw err;
     }
 }
 
@@ -43,7 +42,7 @@ async function createComment(postID, body, email, commentName) {
         return result[0];
 
     } catch (err) {
-        console.log(err);
+        throw err;
     }
 }
 
@@ -52,7 +51,6 @@ async function deleteComment(id) {
         const sql = `DELETE FROM comments WHERE commentID = ?`;
         const result = await pool.query(sql, [id]);
     } catch (err) {
-        console.error('Error deleting comment:', err);
         throw err;
     }
 }
@@ -61,7 +59,6 @@ async function deleteCommentsByPostId(postId) {
         const sql = `DELETE FROM comments WHERE postID = ?`;
         const result = await pool.query(sql, [postId]);
     } catch (err) {
-        console.error('Error deleting comments:', err);
         throw err;
     }
 }
@@ -71,9 +68,8 @@ async function updateComment(id, postID, body, email, commentName) {
         const result = await pool.query(sql, [postID, body, email, commentName, id]);
         return result;
     } catch (err) {
-        console.error('Error updating Comment:', err);
         throw err;
     }
 }
 
-module.exports = { updateComment, getComment, getComments, deleteComment, createComment, deleteCommentsByPostId, getCommentsByPostID }
+module.exports = { updateComment, getComment, deleteComment, createComment, deleteCommentsByPostId, getCommentsByPostID }

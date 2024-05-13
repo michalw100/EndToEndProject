@@ -4,7 +4,6 @@ async function getTodosByUserID(userID) {
   try {
       const sql = 'SELECT * FROM todos WHERE userID=?';
       const [rows, fields] = await pool.query(sql, [userID]);
-      console.log(rows);
       return rows;
   } catch (err) {
         throw err;

@@ -19,9 +19,7 @@ function LogIn({ setUser }) {
                 if (user && user.userID != null) {
                     setLoginError("");
                     localStorage.setItem("currentUser", user.userID);
-                    const userWithoutPassword = { ...user };
-                    delete userWithoutPassword.password;
-                    localStorage.setItem(user.userID, JSON.stringify(userWithoutPassword));
+                    localStorage.setItem(user.userID, JSON.stringify(user));
                     setUser(user);
                     navigate('/home');
                 }
