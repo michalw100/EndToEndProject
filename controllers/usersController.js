@@ -8,6 +8,8 @@ async function create(userName, password) {
         return { userID: response.insertId };
 
     } catch (err) {
+        if (err.sqlMessage == `Duplicate entry '${userName}' for key 'users.userName'`)
+            throw new Error('UserName already exist');
         throw err;
     }
 }

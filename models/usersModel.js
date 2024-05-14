@@ -12,7 +12,7 @@ async function getUser(id) {
 
 async function getUserByPasswordAndUserName(userName) {
     try {
-        const sql = 'SELECT password,zipcode,city,street,company,phone,email,name,userName,userID FROM postsdb.users NATURAL JOIN postsdb.passwords NATURAL JOIN postsdb.addresses WHERE users.userName=?';
+        const sql = 'SELECT password, zipcode, city, street, company, phone, email, name, userName, userID FROM postsdb.users NATURAL JOIN postsdb.passwords NATURAL JOIN postsdb.addresses WHERE users.userName=?';
         const result = await pool.query(sql, [userName]);
         return result[0];
     } catch (err) {
@@ -29,8 +29,8 @@ async function createUser(userName, hashedPassword) {
         return newUser[0];
 
     } catch (err) {
-        if (err.sqlMessage == `Duplicate entry '${userName}' for key 'users.userName'`)
-            throw new Error('UserName already exist');
+        // if (err.sqlMessage == `Duplicate entry '${userName}' for key 'users.userName'`)
+        //     throw new Error('UserName already exist');
         throw err;
     }
 }
