@@ -29,8 +29,6 @@ async function createUser(userName, hashedPassword) {
         return newUser[0];
 
     } catch (err) {
-        // if (err.sqlMessage == `Duplicate entry '${userName}' for key 'users.userName'`)
-        //     throw new Error('UserName already exist');
         throw err;
     }
 }

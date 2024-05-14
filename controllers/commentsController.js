@@ -16,14 +16,6 @@ async function getByPostID(postID) {
     }
 }
 
-// async function getAll() {
-//     try {
-//         return model.getComments();
-//     } catch (err) {
-//         throw err;
-//     }
-// }
-
 async function getById(id) {
     try {
         return model.getComment(id);
