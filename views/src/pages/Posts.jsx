@@ -67,7 +67,6 @@ const Posts = () => {
       .then(data => {
         setAddPost(false);
         setUserPosts([...userPosts, data])
-        console.log(allPosts);
         if(allPosts!=null){
 
           setAllPosts([...allPosts, data])   ;
