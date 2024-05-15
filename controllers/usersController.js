@@ -21,6 +21,9 @@ async function getByPasswordAndUserName(password, userName) {
             if (bcrypt.compareSync(password, result[0].password)) {
                 return result[0];
             }
+            else{
+                throw new Error('the password or userName is incorrect');
+            }
         }
         else {
             throw new Error('User does not exist, please sign up');
