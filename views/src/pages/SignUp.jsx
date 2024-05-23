@@ -32,7 +32,6 @@ function SignUp({ setUser }) {
                     setSignUpError(data.message);
                     return;
                 }
-                // אם התנאי לא מתקיים, תמשיך לכתוב קוד כאן
                 setUser(prevUser => ({
                     ...prevUser,
                     userName: userName,

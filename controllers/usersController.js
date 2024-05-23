@@ -8,6 +8,8 @@ async function create(userName, password) {
         return { userID: response.insertId };
 
     } catch (err) {
+        if (err.sqlMessage == `Duplicate entry '${userName}' for key 'users.userName'`)
+            throw new Error('UserName already exist');
         throw err;
     }
 }
@@ -18,6 +20,9 @@ async function getByPasswordAndUserName(password, userName) {
         if (result[0]) {
             if (bcrypt.compareSync(password, result[0].password)) {
                 return result[0];
+            }
+            else{
+                throw new Error('the password or userName is incorrect');
             }
         }
         else {
